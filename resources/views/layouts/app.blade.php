@@ -55,6 +55,7 @@
                 </div>
 
                 <ul class="nav navbar-nav navbar-right">
+                    @if (auth()->check())
                   <li class="">
                     <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                       {{ auth()->user()->name }}
@@ -85,6 +86,8 @@
                       </li>
                     </ul>
                   </li>
+                  @endif
+
                 </ul>
               </nav>
             </div>
