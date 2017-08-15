@@ -9,6 +9,7 @@ use App\Atm;
 use App\Penerima;
 use App\Donatur;
 use App\Donasi;
+use App\Distribusi;
 
 class HomeController extends Controller
 {
@@ -36,6 +37,8 @@ class HomeController extends Controller
             'penerima' => Penerima::count(),
             'donatur' => Donatur::count(),
             'donasi' => Donasi::count(),
+            'donasis' => Donasi::latest()->limit(15)->get(),
+            'distribusis' => Distribusi::latest()->limit(15)->get()
         ]);
     }
 }
