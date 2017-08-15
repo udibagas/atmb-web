@@ -21,17 +21,17 @@
                     <td>{{ $k->created_at }}</td>
                     <td>
                         @if ($k->kelurahan)
-                        <a href="/kelurahan/{{ $k->kelurahan_id }}">{{ $k->kelurahan->nama }}</a>
+                        <a href="{{url('kelurahan/'.$k->kelurahan_id)}}">{{ $k->kelurahan->nama }}</a>
                         @endif
                     </td>
                     <td>
                         @if ($k->atm)
-                        <a href="/atm/{{ $k->atm_id }}">{{ $k->atm->kode }}</a>
+                        <a href="{{url('atm/'.$k->atm_id)}}">{{ $k->atm->kode }}</a>
                         @endif
                     </td>
                     <td>
                         @if ($k->penerima)
-                        <a href="/penerima/{{ $k->penerima_id }}">
+                        <a href="{{url('penerima/'.$k->penerima_id)}}">
                             {{ $k->penerima->nama_suami }}<br>
                             {{ $k->penerima->nama_istri }}
                         </a>

@@ -14,11 +14,11 @@
                 <input type="text" name="q" class="form-control" placeholder="Cari..." value="{{ request('q') }}">
                 <span class="input-group-btn">
                     <button class="btn btn-default" type="submit">Cari</button>
-                    <a href="/atm" class="btn btn-default"><i class="fa fa-refresh"></i></a>
+                    <a href="{{url('atm')}}" class="btn btn-default"><i class="fa fa-refresh"></i></a>
                 </span>
             </div>
         </form>
-        <a href="/atm/create" class="btn btn-success"><i class="fa fa-plus"></i> TAMBAH ATM BERAS</a>
+        <a href="{{url('atm/create')}}" class="btn btn-success"><i class="fa fa-plus"></i> TAMBAH ATM BERAS</a>
         <hr>
         <table class="table table-striped table-hover">
             <thead>
@@ -42,10 +42,10 @@
                 @foreach($atms as $k)
                 <tr>
                     <td>{{ $loop->index + $atms->firstItem() }}</td>
-                    <td><a href="/atm/{{ $k->id }}">{{ $k->kode }}</a></td>
+                    <td><a href="{{url('atm/'.$k->id)}}">{{ $k->kode }}</a></td>
                     <td>{{ $k->ip_address }}</td>
-                    <td><a href="/kecamatan/{{ $k->kecamatan_id }}">{{ $k->kecamatan->nama }}</a></td>
-                    <td><a href="/kelurahan/{{ $k->kelurahan_id }}">{{ $k->kelurahan->nama }}</a></td>
+                    <td><a href="{{url('kecamatan/'.$k->kecamatan_id)}}">{{ $k->kecamatan->nama }}</a></td>
+                    <td><a href="{{url('kelurahan/'.$k->kelurahan_id)}}">{{ $k->kelurahan->nama }}</a></td>
                     <td>{{ $k->alamat }}</td>
                     <td>{{ $k->nama_petugas }}<br>{{ $k->telpon_petugas }}</td>
                     <td>{{ $k->saldo }}</td>
@@ -59,11 +59,11 @@
                     </td>
                     <td class="text-right">
                         <div class="btn-group">
-                            <a href="/atm/{{$k->id}}/edit" class="btn btn-sm btn-default"><i class="fa fa-edit"></i></a>
+                            <a href="{{url('atm/'.$k->id.'/edit')}}" class="btn btn-sm btn-default"><i class="fa fa-edit"></i></a>
                             <a href="#" class="btn btn-sm btn-default" onclick="event.preventDefault(); if(confirm('Anda yakin?')) {document.getElementById('delete-atm-{{$k->id}}').submit()}"><i class="fa fa-trash"></i></a>
                         </div>
 
-                        {!! Form::open(['method' => 'DELETE', 'url' => '/atm/'.$k->id, 'style' => 'display:none;', 'id' => 'delete-atm-'.$k->id]) !!}
+                        {!! Form::open(['method' => 'DELETE', 'url' => url('atm/'.$k->id), 'style' => 'display:none;', 'id' => 'delete-atm-'.$k->id]) !!}
     					    {!! Form::hidden('redirect', url()->full()) !!}
     					{!! Form::close() !!}
                     </td>

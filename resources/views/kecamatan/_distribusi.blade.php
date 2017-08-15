@@ -21,8 +21,8 @@
                 @foreach($kecamatan->distribusi as $k)
                 <tr>
                     <td>{{ $k->tanggal }}</td>
-                    <td><a href="/kelurahan/{{ $k->kelurahan_id }}">{{ $k->kelurahan->nama }}</a></td>
-                    <td><a href="/atm/{{ $k->atm_id }}">{{ $k->atm->kode }}</a></td>
+                    <td><a href="{{url('kelurahan/'.$k->kelurahan_id)}}">{{ $k->kelurahan->nama }}</a></td>
+                    <td><a href="{{('atm/'.$k->atm_id)}}">{{ $k->atm->kode }}</a></td>
                     <td>{{ number_format($k->jumlah) }}</td>
                     <td>{{ $k->nama_petugas }}</td>
                     <td>{{ $k->telpon_petugas }}</td>

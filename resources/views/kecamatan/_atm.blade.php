@@ -25,9 +25,9 @@
                 @foreach($kecamatan->atm as $k)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
-                    <td><a href="/atm/{{ $k->id }}">{{ $k->kode }}</a></td>
+                    <td><a href="{{url('atm/'.$k->id)}}">{{ $k->kode }}</a></td>
                     <td>{{ $k->ip_address }}</td>
-                    <td><a href="/kelurahan/{{ $k->kelurahan_id }}">{{ $k->kelurahan->nama }}</a></td>
+                    <td><a href="{{url('kelurahan/'.$k->kelurahan_id)}}">{{ $k->kelurahan->nama }}</a></td>
                     <td>{{ $k->alamat }}</td>
                     <td>{{ $k->nama_petugas }}<br>{{ $k->telpon_petugas }}</td>
                     <td>{{ $k->saldo }}</td>

@@ -19,7 +19,7 @@
                 @foreach($kecamatan->kelurahan as $k)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
-                    <td><a href="/kelurahan/{{ $k->id }}">{{ $k->nama }}</a></td>
+                    <td><a href="{{url('kelurahan/'.$k->id)}}">{{ $k->nama }}</a></td>
                     <td>{{ $k->kode }}</td>
                     <td>{{ $k->atm->count() }}</td>
                     <td>{{ number_format($k->penerima->count()) }}</td>

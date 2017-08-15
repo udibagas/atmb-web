@@ -213,8 +213,8 @@
 
     <div class="form-group">
         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-            <a href="/penerima" class="btn btn-default">BATAL</a>
             <button type="submit" class="btn btn-success">SIMPAN</button>
+            <a href="{{url('penerima')}}" class="btn btn-default">BATAL</a>
         </div>
     </div>
 

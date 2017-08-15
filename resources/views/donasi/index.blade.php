@@ -16,12 +16,12 @@
                     <span class="input-group-btn">
                         {!! Form::select('pageSize', [10 => 10, 25 => 25, 50 => 50, 100 => 100, 200 => 200, 500 => 500, 1000 => 1000], request('pageSize'), ['class' => 'form-control']) !!}
                         <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
-                        <a href="/donasi" class="btn btn-default"><i class="fa fa-refresh"></i></a>
+                        <a href="{{url('donasi')}}" class="btn btn-default"><i class="fa fa-refresh"></i></a>
                     </span>
                 </div>
             </form>
         </div>
-        <a href="/donasi/create" class="btn btn-success"><i class="fa fa-plus"></i> INPUT DONASI</a>
+        <a href="{{url('donasi/create')}}" class="btn btn-success"><i class="fa fa-plus"></i> INPUT DONASI</a>
         <hr>
         <table class="table table-striped table-hover">
             <thead>
@@ -44,7 +44,7 @@
                 <tr>
                     <td>{{ $loop->index + $donasis->firstItem() }}</td>
                     <td>{{ $k->tanggal }}</td>
-                    <td><a href="/donatur/{{ $k->donatur_id }}">{{ $k->donatur->nama }}</a></td>
+                    <td><a href="{{url('donatur/'.$k->donatur_id)}}">{{ $k->donatur->nama }}</a></td>
                     <td>{{ $k->donatur->instansi }}</td>
                     <td>{{ $k->donatur->alamat }}</td>
                     <td>{{ $k->donatur->telpon }}</td>
@@ -54,11 +54,11 @@
                     <td>{{ $k->updated_at }}</td>
                     <td class="text-right">
                         <div class="btn-group">
-                            <a href="/donasi/{{$k->id}}/edit" class="btn btn-sm btn-default"><i class="fa fa-edit"></i></a>
+                            <a href="{{url('donasi/'.$k->id.'/edit')}}" class="btn btn-sm btn-default"><i class="fa fa-edit"></i></a>
                             <a href="#" class="btn btn-sm btn-default" onclick="event.preventDefault(); if(confirm('Anda yakin?')) {document.getElementById('delete-donasi-{{$k->id}}').submit()}"><i class="fa fa-trash"></i></a>
                         </div>
 
-                        {!! Form::open(['method' => 'DELETE', 'url' => '/donasi/'.$k->id, 'style' => 'display:none;', 'id' => 'delete-donasi-'.$k->id]) !!}
+                        {!! Form::open(['method' => 'DELETE', 'url' => url('/donasi/'.$k->id), 'style' => 'display:none;', 'id' => 'delete-donasi-'.$k->id]) !!}
     					    {!! Form::hidden('redirect', url()->full()) !!}
     					{!! Form::close() !!}
                     </td>

@@ -16,13 +16,13 @@
                     <span class="input-group-btn">
                         {!! Form::select('pageSize', [10 => 10, 25 => 25, 50 => 50, 100 => 100, 200 => 200, 500 => 500, 1000 => 1000], request('pageSize'), ['class' => 'form-control']) !!}
                         <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
-                        <a href="/user" class="btn btn-default" title="Refresh"><i class="fa fa-refresh"></i></a>
+                        <a href="{{url('user')}}" class="btn btn-default" title="Refresh"><i class="fa fa-refresh"></i></a>
                         <a href="#" class="btn btn-default" title="Download Excel"><i class="fa fa-file-excel-o"></i></a>
                     </span>
                 </div>
             </form>
         </div>
-        <a href="/user/create" class="btn btn-success"><i class="fa fa-plus"></i> TAMBAH USER</a>
+        <a href="{{url('user/create')}}" class="btn btn-success"><i class="fa fa-plus"></i> TAMBAH USER</a>
         <hr>
         <table class="table table-striped table-hover">
             <thead>
@@ -41,11 +41,11 @@
                     <td>{{ $k->email }}</td>
                     <td class="text-right">
                         <div class="btn-group">
-                            <a href="/user/{{$k->id}}/edit" class="btn btn-sm btn-default"><i class="fa fa-edit"></i></a>
+                            <a href="{{url('user/'.$k->id.'/edit')}}" class="btn btn-sm btn-default"><i class="fa fa-edit"></i></a>
                             <a href="#" class="btn btn-sm btn-default" onclick="event.preventDefault(); if(confirm('Anda yakin?')) {document.getElementById('delete-user-{{$k->id}}').submit()}"><i class="fa fa-trash"></i></a>
                         </div>
 
-                        {!! Form::open(['method' => 'DELETE', 'url' => '/user/'.$k->id, 'style' => 'display:none;', 'id' => 'delete-user-'.$k->id]) !!}
+                        {!! Form::open(['method' => 'DELETE', 'url' => url('user/'.$k->id), 'style' => 'display:none;', 'id' => 'delete-user-'.$k->id]) !!}
     					    {!! Form::hidden('redirect', url()->full()) !!}
     					{!! Form::close() !!}
                     </td>

@@ -16,12 +16,12 @@
                     <span class="input-group-btn">
                         {!! Form::select('pageSize', [10 => 10, 25 => 25, 50 => 50, 100 => 100, 200 => 200, 500 => 500, 1000 => 1000], request('pageSize'), ['class' => 'form-control']) !!}
                         <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
-                        <a href="/distribusi" class="btn btn-default"><i class="fa fa-refresh"></i></a>
+                        <a href="{{url('distribusi')}}" class="btn btn-default"><i class="fa fa-refresh"></i></a>
                     </span>
                 </div>
             </form>
         </div>
-        <a href="/distribusi/create" class="btn btn-success"><i class="fa fa-plus"></i> INPUT DISTRIBUSI</a>
+        <a href="{{url('distribusi/create')}}" class="btn btn-success"><i class="fa fa-plus"></i> INPUT DISTRIBUSI</a>
         <hr>
         <table class="table table-striped table-hover">
             <thead>
@@ -46,9 +46,9 @@
                 <tr>
                     <td>{{ $loop->index + $distribusis->firstItem() }}</td>
                     <td>{{ $k->tanggal }}</td>
-                    <td><a href="/kecamatan/{{ $k->kecamatan_id }}">{{ $k->kecamatan->nama }}</a></td>
-                    <td><a href="/kelurahan/{{ $k->kelurahan_id }}">{{ $k->kelurahan->nama }}</a></td>
-                    <td><a href="/atm/{{ $k->atm_id }}">{{ $k->atm->kode }}</a></td>
+                    <td><a href="{{url('kecamatan/'.$k->kecamatan_id)}}">{{ $k->kecamatan->nama }}</a></td>
+                    <td><a href="{{url('kelurahan/'.$k->kelurahan_id)}}">{{ $k->kelurahan->nama }}</a></td>
+                    <td><a href="{{url('atm/'.$k->atm_id)}}">{{ $k->atm->kode }}</a></td>
                     <td>{{ number_format($k->jumlah) }}</td>
                     <td>{{ $k->nama_petugas }}</td>
                     <td>{{ $k->telpon_petugas }}</td>
@@ -58,11 +58,11 @@
                     <td>{{ $k->updated_at }}</td>
                     <td class="text-right">
                         <div class="btn-group">
-                            <a href="/distribusi/{{$k->id}}/edit" class="btn btn-sm btn-default"><i class="fa fa-edit"></i></a>
+                            <a href="{{url('distribusi/'.$k->id.'/edit')}}" class="btn btn-sm btn-default"><i class="fa fa-edit"></i></a>
                             <a href="#" class="btn btn-sm btn-default" onclick="event.preventDefault(); if(confirm('Anda yakin?')) {document.getElementById('delete-distribusi-{{$k->id}}').submit()}"><i class="fa fa-trash"></i></a>
                         </div>
 
-                        {!! Form::open(['method' => 'DELETE', 'url' => '/distribusi/'.$k->id, 'style' => 'display:none;', 'id' => 'delete-distribusi-'.$k->id]) !!}
+                        {!! Form::open(['method' => 'DELETE', 'url' => url('/distribusi/'.$k->id), 'style' => 'display:none;', 'id' => 'delete-distribusi-'.$k->id]) !!}
     					    {!! Form::hidden('redirect', url()->full()) !!}
     					{!! Form::close() !!}
                     </td>

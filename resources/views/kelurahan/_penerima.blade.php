@@ -24,7 +24,7 @@
                 @foreach($kelurahan->penerima as $k)
                 <tr>
                     <td>{{ number_format($loop->iteration) }}</td>
-                    <td><a href="/penerima/{{ $k->id }}">{{ strtoupper($k->kode_keluarga) }}</a></td>
+                    <td><a href="{{url('penerima/'.$k->id)}}">{{ strtoupper($k->kode_keluarga) }}</a></td>
                     <td>{{ $k->nomor_kk }}<br>{{ $k->nomor_pkh }}</td>
                     <td>{{ $k->nama_istri }}<br>{{ $k->nama_suami }}</td>
                     <td>{{ $k->tanggal_lahir_istri }}<br>{{ $k->tanggal_lahir_suami }}</td>
