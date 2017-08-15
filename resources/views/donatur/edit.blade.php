@@ -8,7 +8,7 @@
         <div class="clearfix"></div>
     </div>
     <div class="x_content">
-        @include('donatur._form', ['method' => 'PUT', 'url' => '/donatur/'.$donatur->id])
+        @include('donatur._form', ['method' => 'PUT', 'url' => url('donatur/'.$donatur->id)])
     </div>
 </div>
 

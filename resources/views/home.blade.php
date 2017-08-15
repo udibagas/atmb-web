@@ -105,6 +105,45 @@
             </div>
         </div>
     </div>
+
+    <div class="col-md-6">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>PEMELIHARAAN <small>Daftar pemeliharaan terakhir</small></h2>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="x_content">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Kecamatan</th>
+                            <th>Kelurahan</th>
+                            <th>ATM</th>
+                            <th>Nama Petugas</th>
+                            <th>Telpon Petugas</th>
+                            <th>Keterangan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($pemeliharaans as $k)
+                        <tr>
+                            <td>{{ $k->tanggal }}</td>
+                            <td><a href="{{url('kecamatan/'.$k->kecamatan_id)}}">{{ $k->kecamatan->nama }}</a></td>
+                            <td><a href="{{url('kelurahan/'.$k->kelurahan_id)}}">{{ $k->kelurahan->nama }}</a></td>
+                            <td><a href="{{url('atm/'.$k->atm_id)}}">{{ $k->atm->kode }}</a></td>
+                            <td>{{ $k->nama_petugas }}</td>
+                            <td>{{ $k->telpon_petugas }}</td>
+                            <td>{{ $k->keterangan }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 @endsection

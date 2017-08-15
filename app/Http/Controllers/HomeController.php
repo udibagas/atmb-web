@@ -10,6 +10,7 @@ use App\Penerima;
 use App\Donatur;
 use App\Donasi;
 use App\Distribusi;
+use App\Pemeliharaan;
 
 class HomeController extends Controller
 {
@@ -38,7 +39,8 @@ class HomeController extends Controller
             'donatur' => Donatur::count(),
             'donasi' => Donasi::count(),
             'donasis' => Donasi::latest()->limit(15)->get(),
-            'distribusis' => Distribusi::latest()->limit(15)->get()
+            'distribusis' => Distribusi::latest()->limit(15)->get(),
+            'pemeliharaans' => Pemeliharaan::latest()->limit(15)->get()
         ]);
     }
 }

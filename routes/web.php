@@ -21,6 +21,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::resource('/donatur', 'DonaturController');
     Route::resource('/donasi', 'DonasiController');
     Route::resource('/distribusi', 'DistribusiController');
+    Route::resource('/pemeliharaan', 'PemeliharaanController');
     Route::resource('/kelurahan', 'KelurahanController');
     Route::resource('/kecamatan', 'KecamatanController');
     Route::resource('/atm', 'AtmController');

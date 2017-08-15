@@ -7,7 +7,7 @@
                 <ul class="nav child_menu">
                     <li><a href="{{url('donasi')}}">Donasi</a></li>
                     <li><a href="{{url('distribusi')}}">Distribusi</a></li>
-                    <li><a href="{{url('maintenance')}}">Perawatan</a></li>
+                    <li><a href="{{url('pemeliharaan')}}">Pemeliharaan</a></li>
                 </ul>
             </li>
             <li><a><i class="fa fa-database"></i> Master Data <span class="fa fa-chevron-down"></span></a>

@@ -8,7 +8,7 @@
         <div class="clearfix"></div>
     </div>
     <div class="x_content">
-        @include('user._form', ['method' => 'PUT', 'url' => '/user/'.$user->id])
+        @include('user._form', ['method' => 'PUT', 'url' => url('user/'.$user->id)])
     </div>
 </div>
 

@@ -8,7 +8,7 @@
         <div class="clearfix"></div>
     </div>
     <div class="x_content">
-        @include('atm._form', ['method' => 'PUT', 'url' => '/atm/'.$atm->id])
+        @include('atm._form', ['method' => 'PUT', 'url' => url('atm/'.$atm->id)])
     </div>
 </div>
 

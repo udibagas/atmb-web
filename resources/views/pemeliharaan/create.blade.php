@@ -4,11 +4,11 @@
 
 <div class="x_panel">
     <div class="x_title">
-        <h2>Edit Donasi</h2>
+        <h2>Input Pemeliharaan</h2>
         <div class="clearfix"></div>
     </div>
     <div class="x_content">
-        @include('donasi._form', ['method' => 'PUT', 'url' => url('donasi/'.$donasi->id)])
+        @include('pemeliharaan._form', ['method' => 'POST', 'url' => '/pemeliharaan'])
     </div>
 </div>
 
