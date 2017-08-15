@@ -54,8 +54,8 @@
 
     <div class="form-group">
         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-            <button type="submit" class="btn btn-success">Simpan</button>
-            <a href="{{url('kelurahan')}}" class="btn btn-info">Cancel</a>
+            <button type="submit" class="btn btn-success">SIMPAN</button>
+            <a href="{{url('kelurahan')}}" class="btn btn-info">BATAL</a>
         </div>
     </div>
 
