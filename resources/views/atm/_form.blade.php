@@ -115,7 +115,7 @@
     <div class="form-group">
         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
             <button type="submit" class="btn btn-success">SIMPAN</button>
-            <a href="{{url('kelurahan')}}" class="btn btn-default">BATAL</a>
+            <a href="{{url('atm')}}" class="btn btn-default">BATAL</a>
         </div>
     </div>
 

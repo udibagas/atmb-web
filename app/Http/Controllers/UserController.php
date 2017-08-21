@@ -15,15 +15,29 @@ class UserController extends Controller
     */
     public function index(Request $request)
     {
-        return view('user.index', [
-            'users' => User::select('users.*')
-                ->when($request->q, function($query) use ($request) {
-                    return $query
-                        ->where('users.name', 'LIKE', '%'.$request->q.'%')
-                        ->orWhere('users.email', 'LIKE', '%'.$request->q.'%');
-                    })
-                ->orderBy('users.name', 'ASC')->paginate(10)
-        ]);
+        $pageSize = $request->rowCount > 0 ? $request->rowCount : 1000000;
+        $request['page'] = $request->current;
+        $sort = $request->sort ? key($request->sort) : 'users.name';
+        $dir = $request->sort ? $request->sort[$sort] : 'ASC';
+
+        $users = User::selectRaw('users.*')
+            ->when($request->searchPhrase, function($query) use ($request) {
+                return $query
+                    ->where('users.name', 'LIKE', '%'.$request->searchPhrase.'%')
+                    ->orWhere('users.email', 'LIKE', '%'.$request->searchPhrase.'%');
+                })
+            ->orderBy($sort, $dir)->paginate($pageSize);
+
+        if ($request->ajax()) {
+            return [
+                'rowCount' => $users->perPage(),
+                'total' => $users->total(),
+                'current' => $users->currentPage(),
+                'rows' => $users->items(),
+            ];
+        }
+
+        return view('user.index', ['users' => $users]);
     }
 
     /**
@@ -91,7 +105,6 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $user->delete();
-        return redirect('/user');
+        return ['success' => $user->delete()];
     }
 }

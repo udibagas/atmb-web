@@ -44,6 +44,8 @@
     </div>
 </div>
 
+@include('kecamatan._penerima')
+
 <div class="row">
     <div class="col-md-6">
         @include('kecamatan._distribusi')
@@ -53,7 +55,6 @@
     </div>
 </div>
 
-@include('kecamatan._penerima')
 
 
 @endsection

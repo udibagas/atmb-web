@@ -15,22 +15,36 @@ class DonaturController extends Controller
      */
     public function index(Request $request)
     {
-        return view('donatur.index', [
-            'donaturs' => Donatur::select('donaturs.*')
-                        // ->join('kecamatans', 'kecamatans.id', '=', 'donaturs.kecamatan_id', 'LEFT')
-                        // ->join('kelurahans', 'kelurahans.id', '=', 'donaturs.kelurahan_id', 'LEFT')
-                        ->when($request->q, function($query) use ($request) {
-                            return $query
-                                ->where('donaturs.nama', 'LIKE', '%'.$request->q.'%')
-                                ->orWhere('donaturs.instansi', 'LIKE', '%'.$request->q.'%')
-                                ->orWhere('donaturs.alamat', 'LIKE', '%'.$request->q.'%')
-                                ->orWhere('donaturs.telpon', 'LIKE', '%'.$request->q.'%')
-                                ->orWhere('donaturs.jenis', 'LIKE', '%'.$request->q.'%');
-                                // ->orWhere('kelurahans.nama', 'LIKE', '%'.$request->q.'%')
-                                // ->orWhere('kecamatans.nama', 'LIKE', '%'.$request->q.'%');
-                        })
-                        ->orderBy('donaturs.nama', 'ASC')->paginate(10)
-        ]);
+        $pageSize = $request->rowCount > 0 ? $request->rowCount : 1000000;
+        $request['page'] = $request->current;
+        $sort = $request->sort ? key($request->sort) : 'donaturs.nama';
+        $dir = $request->sort ? $request->sort[$sort] : 'asc';
+
+        $donaturs = Donatur::selectRaw('donaturs.*')
+                    // ->join('kecamatans', 'kecamatans.id', '=', 'donaturs.kecamatan_id', 'LEFT')
+                    // ->join('kelurahans', 'kelurahans.id', '=', 'donaturs.kelurahan_id', 'LEFT')
+                    ->when($request->searchPhrase, function($query) use ($request) {
+                        return $query
+                            ->where('donaturs.nama', 'LIKE', '%'.$request->searchPhrase.'%')
+                            ->orWhere('donaturs.instansi', 'LIKE', '%'.$request->searchPhrase.'%')
+                            ->orWhere('donaturs.alamat', 'LIKE', '%'.$request->searchPhrase.'%')
+                            ->orWhere('donaturs.telpon', 'LIKE', '%'.$request->searchPhrase.'%')
+                            ->orWhere('donaturs.jenis', 'LIKE', '%'.$request->searchPhrase.'%');
+                            // ->orWhere('kelurahans.nama', 'LIKE', '%'.$request->searchPhrase.'%')
+                            // ->orWhere('kecamatans.nama', 'LIKE', '%'.$request->searchPhrase.'%');
+                    })
+                    ->orderBy($sort, $dir)->paginate($pageSize);
+
+        if ($request->ajax()) {
+            return [
+                'rowCount' => $donaturs->perPage(),
+                'total' => $donaturs->total(),
+                'current' => $donaturs->currentPage(),
+                'rows' => $donaturs->items(),
+            ];
+        }
+
+        return view('donatur.index', ['donaturs' => $donaturs]);
     }
 
     /**
@@ -98,7 +112,6 @@ class DonaturController extends Controller
      */
     public function destroy(Donatur $donatur)
     {
-        $donatur->delete();
-        return redirect('/donatur');
+        return ['success' => $donatur->delete()];
     }
 }

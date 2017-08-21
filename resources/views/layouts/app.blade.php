@@ -17,13 +17,9 @@
     <link href="{{ asset('gentelella/vendors/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
     <!-- iCheck -->
     <link href="{{ asset('gentelella/vendors/iCheck/skins/flat/green.css') }}" rel="stylesheet">
-    <!-- bootstrap-progressbar -->
-    <link href="{{ asset('gentelella/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css') }}" rel="stylesheet">
-    <!-- jVectorMap -->
-    <link href="{{ ('gentelella/production/css/maps/jquery-jvectormap-2.0.3.css') }}" rel="stylesheet"/>
-
+    <link href="{{ asset('jquery.bootgrid/jquery.bootgrid.min.css') }}" rel="stylesheet"/>
     <!-- Custom styling plus plugins -->
-    <link href="{{ asset('gentelella/build/css/custom.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('gentelella/build/css/custom.css') }}" rel="stylesheet">
     <!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> -->
 </head>
 <body class="nav-md">
@@ -117,6 +113,17 @@
       <script src="{{ asset('gentelella/vendors/bootstrap/dist/js/bootstrap.min.js') }}"></script>
       <!-- FastClick -->
       <script src="{{ asset('gentelella/vendors/fastclick/lib/fastclick.js') }}"></script>
+
+      <script src="{{ asset('jquery.bootgrid/jquery.bootgrid.min.js') }}"></script>
+      <script src="{{ asset('jquery.bootgrid/jquery.bootgrid.fa.min.js') }}"></script>
+
+      <script type="text/javascript">
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+      </script>
 
       @stack('scripts')
 

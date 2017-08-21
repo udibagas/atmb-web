@@ -918,6 +918,10 @@ legend {
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px; }
 
+.pagination>li>a, .pagination>li>span {
+    cursor: pointer;
+}
+
 /** Contacts **/
 /* *********  /custom accordion  **************************** */
 /* *********  dashboard widget  **************************** */
@@ -1922,8 +1926,8 @@ a.star {
   padding: 3px 0;
   border: 1px solid #EFEFEF; }
 
-.input-group {
-  margin-bottom: 10px; }
+/*.input-group {
+  margin-bottom: 10px; }*/
 
 .ln_solid {
   border-top: 1px solid #e5e5e5;
@@ -1944,7 +1948,7 @@ span.section {
   border-bottom: 1px solid #e5e5e5; }
 
 .form-control {
-  border-radius: 0;
+  /*border-radius: 0;*/
   width: 100%; }
 
 .form-horizontal .control-label {
@@ -3433,7 +3437,7 @@ a.hiddenanchor {
   -ms-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;
   -o-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;
-  border-radius: 0 0 5px 5px;
+  /*border-radius: 0 0 5px 5px;*/
   border-top: 1px solid #CFD5D9;
   padding: 15px 0; }
 

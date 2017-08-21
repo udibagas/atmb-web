@@ -15,20 +15,35 @@ class KelurahanController extends Controller
      */
     public function index(Request $request)
     {
-        $pageSize = $request->pageSize ? $request->pageSize : 10;
-        $sort = $request->sort ? $request->sort : 'kelurahans.nama';
-        $order = $request->order ? $request->order : 'ASC';
+        $pageSize = $request->rowCount > 0 ? $request->rowCount : 1000000;
+        $request['page'] = $request->current;
+        $sort = $request->sort ? key($request->sort) : 'kelurahans.nama';
+        $dir = $request->sort ? $request->sort[$sort] : 'asc';
 
-        return view('kelurahan.index', [
-            'kelurahans' => Kelurahan::select('kelurahans.*')
-                        ->join('kecamatans', 'kecamatans.id', '=', 'kelurahans.kecamatan_id', 'LEFT')
-                        ->when($request->q, function($query) use ($request) {
-                            return $query
-                                ->where('kelurahans.nama', 'LIKE', '%'.$request->q.'%')
-                                ->orWhere('kecamatans.nama', 'LIKE', '%'.$request->q.'%');
-                        })
-                        ->orderBy($sort, $order)->paginate($pageSize)
-        ]);
+        $kelurahans = Kelurahan::selectRaw('
+                        kelurahans.*,
+                        kecamatans.nama AS kecamatan,
+                        (SELECT COUNT(id) FROM atms WHERE kelurahan_id = kelurahans.id) AS jml_atm,
+                        (SELECT COUNT(id) FROM penerimas WHERE kelurahan_id = kelurahans.id) AS jml_penerima
+                    ')
+                    ->join('kecamatans', 'kecamatans.id', '=', 'kelurahans.kecamatan_id', 'LEFT')
+                    ->when($request->searchPhrase, function($query) use ($request) {
+                        return $query
+                            ->where('kelurahans.nama', 'LIKE', '%'.$request->searchPhrase.'%')
+                            ->orWhere('kecamatans.nama', 'LIKE', '%'.$request->searchPhrase.'%');
+                    })
+                    ->orderBy($sort, $dir)->paginate($pageSize);
+
+        if ($request->ajax()) {
+            return [
+                'rowCount' => $kelurahans->perPage(),
+                'total' => $kelurahans->total(),
+                'current' => $kelurahans->currentPage(),
+                'rows' => $kelurahans->items(),
+            ];
+        }
+
+        return view('kelurahan.index', ['kelurahans' => $kelurahans]);
     }
 
     /**
@@ -96,7 +111,6 @@ class KelurahanController extends Controller
      */
     public function destroy(Kelurahan $kelurahan)
     {
-        $kelurahan->delete();
-        return redirect('/kelurahan');
+        return ['success' => $kelurahan->delete()];
     }
 }

@@ -15,29 +15,50 @@ class PenerimaController extends Controller
      */
     public function index(Request $request)
     {
-        $pageSize = $request->pageSize ? $request->pageSize : 10;
-        $sort = $request->sort ? $request->sort : 'kode_keluarga';
-        $order = $request->order ? $request->order : 'ASC';
+        $pageSize = $request->rowCount > 0 ? $request->rowCount : 1000000;
+        $request['page'] = $request->current;
+        $sort = $request->sort ? key($request->sort) : 'penerimas.kode_keluarga';
+        $dir = $request->sort ? $request->sort[$sort] : 'ASC';
 
-        return view('penerima.index', [
-            'penerimas' => Penerima::select('penerimas.*')
-                        ->join('kecamatans', 'kecamatans.id', '=', 'penerimas.kecamatan_id')
-                        ->join('kelurahans', 'kelurahans.id', '=', 'penerimas.kelurahan_id')
-                        ->when($request->q, function($query) use ($request) {
-                            return $query
-                                ->where('kecamatans.nama', 'LIKE', '%'.$request->q.'%')
-                                ->orWhere('kelurahans.nama', 'LIKE', '%'.$request->q.'%')
-                                ->orWhere('penerimas.kode_keluarga', 'LIKE', '%'.$request->q.'%')
-                                ->orWhere('penerimas.alamat', 'LIKE', '%'.$request->q.'%')
-                                ->orWhere('penerimas.nomor_kk', 'LIKE', '%'.$request->q.'%')
-                                ->orWhere('penerimas.nomor_pkh', 'LIKE', '%'.$request->q.'%')
-                                ->orWhere('penerimas.nama_anggota_keluarga', 'LIKE', '%'.$request->q.'%')
-                                ->orWhere('penerimas.nik_suami', 'LIKE', '%'.$request->q.'%')
-                                ->orWhere('penerimas.nik_istri', 'LIKE', '%'.$request->q.'%')
-                                ->orWhere('penerimas.nama_suami', 'LIKE', '%'.$request->q.'%')
-                                ->orWhere('penerimas.nama_istri', 'LIKE', '%'.$request->q.'%');
-                        })->orderBy($sort, $order)->paginate($pageSize)
-        ]);
+        $penerimas = Penerima::selectRaw('
+                        penerimas.*,
+                        kecamatans.nama AS kecamatan,
+                        kelurahans.nama AS kelurahan
+                    ')
+                    ->join('kecamatans', 'kecamatans.id', '=', 'penerimas.kecamatan_id')
+                    ->join('kelurahans', 'kelurahans.id', '=', 'penerimas.kelurahan_id')
+                    ->when($request->searchPhrase, function($query) use ($request) {
+                        return $query
+                            ->where('kecamatans.nama', 'LIKE', '%'.$request->searchPhrase.'%')
+                            ->orWhere('kelurahans.nama', 'LIKE', '%'.$request->searchPhrase.'%')
+                            ->orWhere('penerimas.kode_keluarga', 'LIKE', '%'.$request->searchPhrase.'%')
+                            ->orWhere('penerimas.alamat', 'LIKE', '%'.$request->searchPhrase.'%')
+                            ->orWhere('penerimas.nomor_kk', 'LIKE', '%'.$request->searchPhrase.'%')
+                            ->orWhere('penerimas.nomor_pkh', 'LIKE', '%'.$request->searchPhrase.'%')
+                            ->orWhere('penerimas.nama_anggota_keluarga', 'LIKE', '%'.$request->searchPhrase.'%')
+                            ->orWhere('penerimas.nik_suami', 'LIKE', '%'.$request->searchPhrase.'%')
+                            ->orWhere('penerimas.nik_istri', 'LIKE', '%'.$request->searchPhrase.'%')
+                            ->orWhere('penerimas.nama_suami', 'LIKE', '%'.$request->searchPhrase.'%')
+                            ->orWhere('penerimas.nama_istri', 'LIKE', '%'.$request->searchPhrase.'%');
+                    })
+                    ->when($request->kecamatan_id, function($query) use ($request) {
+                        return $query->where('penerimas.kecamatan_id', $request->kecamatan_id);
+                    })
+                    ->when($request->kelurahan_id, function($query) use ($request) {
+                        return $query->where('penerimas.kelurahan_id', $request->kelurahan_id);
+                    })
+                    ->orderBy($sort, $dir)->paginate($pageSize);
+
+        if ($request->ajax()) {
+            return [
+                'rowCount' => $penerimas->perPage(),
+                'total' => $penerimas->total(),
+                'current' => $penerimas->currentPage(),
+                'rows' => $penerimas->items(),
+            ];
+        }
+
+        return view('penerima.index', ['penerimas' => $penerimas]);
     }
 
     /**
@@ -105,7 +126,6 @@ class PenerimaController extends Controller
      */
     public function destroy(Penerima $penerima)
     {
-        $penerima->delete();
-        return redirect('/penerima');
+        return ['success' => $penerima->delete()];
     }
 }

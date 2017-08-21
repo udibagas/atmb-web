@@ -15,16 +15,31 @@ class KecamatanController extends Controller
      */
     public function index(Request $request)
     {
-        $pageSize = $request->pageSize ? $request->pageSize : 10;
-        $sort = $request->sort ? $request->sort : 'nama';
-        $order = $request->order ? $request->order : 'ASC';
+        $pageSize = $request->rowCount > 0 ? $request->rowCount : 1000000;
+        $request['page'] = $request->current;
+        $sort = $request->sort ? key($request->sort) : 'kecamatans.nama';
+        $dir = $request->sort ? $request->sort[$sort] : 'ASC';
 
-        return view('kecamatan.index', [
-            'kecamatans' => Kecamatan::orderBy($sort, $order)
-                        ->when($request->q, function($query) use ($request) {
-                            return $query->where('nama', 'LIKE', '%'.$request->q.'%');
-                        })->paginate($pageSize)
-        ]);
+        $kecamatans = Kecamatan::selectRaw('
+                        kecamatans.*,
+                        (SELECT COUNT(id) FROM kelurahans WHERE kecamatan_id = kecamatans.id) AS jml_kelurahan,
+                        (SELECT COUNT(id) FROM atms WHERE kecamatan_id = kecamatans.id) AS jml_atm,
+                        (SELECT COUNT(id) FROM penerimas WHERE kecamatan_id = kecamatans.id) AS jml_penerima
+                    ')
+                    ->when($request->searchPhrase, function($query) use ($request) {
+                        return $query->where('nama', 'LIKE', '%'.$request->searchPhrase.'%');
+                    })->orderBy($sort, $dir)->paginate($pageSize);
+
+        if ($request->ajax()) {
+            return [
+                'rowCount' => $kecamatans->perPage(),
+                'total' => $kecamatans->total(),
+                'current' => $kecamatans->currentPage(),
+                'rows' => $kecamatans->items(),
+            ];
+        }
+
+        return view('kecamatan.index', ['kecamatans' => $kecamatans]);
     }
 
     /**
@@ -92,7 +107,6 @@ class KecamatanController extends Controller
      */
     public function destroy(Kecamatan $kecamatan)
     {
-        $kecamatan->delete();
-        return redirect('/kecamatan');
+        return ['success' => $kecamatan->delete()];
     }
 }

@@ -15,26 +15,43 @@ class PemeliharaanController extends Controller
      */
     public function index(Request $request)
     {
-        $pageSize = $request->pageSize ? $request->pageSize : 10;
-        $pemeliharaan = Pemeliharaan::when($request->q, function($query) use ($request) {
+        $pageSize = $request->rowCount > 0 ? $request->rowCount : 1000000;
+        $request['page'] = $request->current;
+        $sort = $request->sort ? key($request->sort) : 'pemeliharaans.tanggal';
+        $dir = $request->sort ? $request->sort[$sort] : 'DESC';
+
+        $pemeliharaans = Pemeliharaan::selectRaw('
+                    pemeliharaans.*,
+                    kecamatans.nama AS kecamatan,
+                    kelurahans.nama AS kelurahan,
+                    atms.kode AS atm,
+                    users.name AS user
+                ')
+                ->join('kecamatans', 'kecamatans.id', '=', 'pemeliharaans.kecamatan_id')
+                ->join('kelurahans', 'kelurahans.id', '=', 'pemeliharaans.kelurahan_id')
+                ->join('atms', 'atms.id', '=', 'pemeliharaans.atm_id')
+                ->join('users', 'users.id', '=', 'pemeliharaans.user_id')
+                ->when($request->searchPhrase, function($query) use ($request) {
                     return $query
-                        ->join('kecamatans', 'kecamatans.id', '=', 'pemeliharaans.kecamatan_id')
-                        ->join('kelurahans', 'kelurahans.id', '=', 'pemeliharaans.kelurahan_id')
-                        ->join('atms', 'atms.id', '=', 'pemeliharaans.atm_id')
-                        ->join('users', 'users.id', '=', 'pemeliharaans.user_id')
-                        ->where('pemeliharaans.tanggal', '=', $request->q)
-                        ->orWhere('pemeliharaans.nama_petugas', 'LIKE', '%'.$request->q.'%')
-                        ->orWhere('pemeliharaans.telpon_petugas', 'LIKE', '%'.$request->q.'%')
-                        ->orWhere('kecamatans.nama', 'LIKE', '%'.$request->q.'%')
-                        ->orWhere('kelurahans.nama', 'LIKE', '%'.$request->q.'%')
-                        ->orWhere('users.name', 'LIKE', '%'.$request->q.'%')
-                        ->orWhere('atms.kode', 'LIKE', '%'.$request->q.'%');
-                });
+                        ->where('pemeliharaans.tanggal', '=', $request->searchPhrase)
+                        ->orWhere('pemeliharaans.nama_petugas', 'LIKE', '%'.$request->searchPhrase.'%')
+                        ->orWhere('pemeliharaans.telpon_petugas', 'LIKE', '%'.$request->searchPhrase.'%')
+                        ->orWhere('kecamatans.nama', 'LIKE', '%'.$request->searchPhrase.'%')
+                        ->orWhere('kelurahans.nama', 'LIKE', '%'.$request->searchPhrase.'%')
+                        ->orWhere('users.name', 'LIKE', '%'.$request->searchPhrase.'%')
+                        ->orWhere('atms.kode', 'LIKE', '%'.$request->searchPhrase.'%');
+                })->orderBy($sort, $dir)->paginate($pageSize);
 
+        if ($request->ajax()) {
+            return [
+                'rowCount' => $pemeliharaans->perPage(),
+                'total' => $pemeliharaans->total(),
+                'current' => $pemeliharaans->currentPage(),
+                'rows' => $pemeliharaans->items(),
+            ];
+        }
 
-        return view('pemeliharaan.index', [
-            'pemeliharaans' => $pemeliharaan->select('pemeliharaans.*')->orderBy('tanggal', 'DESC')->paginate($pageSize)
-        ]);
+        return view('pemeliharaan.index', ['pemeliharaans' => $pemeliharaans]);
     }
 
     /**
@@ -106,7 +123,6 @@ class PemeliharaanController extends Controller
      */
     public function destroy(Pemeliharaan $pemeliharaan)
     {
-        $pemeliharaan->delete();
-        return redirect('/pemeliharaan');
+        return ['success' => $pemeliharaan->delete()];
     }
 }

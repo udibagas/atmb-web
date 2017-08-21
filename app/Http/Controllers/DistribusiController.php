@@ -15,13 +15,24 @@ class DistribusiController extends Controller
      */
     public function index(Request $request)
     {
-        $pageSize = $request->pageSize ? $request->pageSize : 10;
-        $distribusi = Distribusi::when($request->q, function($query) use ($request) {
+        $pageSize = $request->rowCount > 0 ? $request->rowCount : 1000000;
+        $request['page'] = $request->current;
+        $sort = $request->sort ? key($request->sort) : 'distribusis.tanggal';
+        $dir = $request->sort ? $request->sort[$sort] : 'DESC';
+
+        $distribusis = Distribusi::selectRaw('
+                    distribusis.*,
+                    kecamatans.nama AS kecamatan,
+                    kelurahans.nama AS kelurahan,
+                    atms.kode AS atm,
+                    users.name AS user
+                ')
+                ->join('kecamatans', 'kecamatans.id', '=', 'distribusis.kecamatan_id')
+                ->join('kelurahans', 'kelurahans.id', '=', 'distribusis.kelurahan_id')
+                ->join('atms', 'atms.id', '=', 'distribusis.atm_id')
+                ->join('users', 'users.id', '=', 'distribusis.user_id')
+                ->when($request->q, function($query) use ($request) {
                     return $query
-                        ->join('kecamatans', 'kecamatans.id', '=', 'distribusis.kecamatan_id')
-                        ->join('kelurahans', 'kelurahans.id', '=', 'distribusis.kelurahan_id')
-                        ->join('atms', 'atms.id', '=', 'distribusis.atm_id')
-                        ->join('users', 'users.id', '=', 'distribusis.user_id')
                         ->where('distribusis.tanggal', '=', $request->q)
                         ->orWhere('distribusis.nama_petugas', 'LIKE', '%'.$request->q.'%')
                         ->orWhere('distribusis.telpon_petugas', 'LIKE', '%'.$request->q.'%')
@@ -29,13 +40,18 @@ class DistribusiController extends Controller
                         ->orWhere('kelurahans.nama', 'LIKE', '%'.$request->q.'%')
                         ->orWhere('users.name', 'LIKE', '%'.$request->q.'%')
                         ->orWhere('atms.kode', 'LIKE', '%'.$request->q.'%');
-                });
+                })->orderBy('tanggal', 'DESC')->paginate($pageSize);
 
+        if ($request->ajax()) {
+            return [
+                'rowCount' => $distribusis->perPage(),
+                'total' => $distribusis->total(),
+                'current' => $distribusis->currentPage(),
+                'rows' => $distribusis->items(),
+            ];
+        }
 
-        return view('distribusi.index', [
-            'total' => $distribusi->selectRaw('SUM(jumlah) as total')->first()->total,
-            'distribusis' => $distribusi->select('distribusis.*')->orderBy('tanggal', 'DESC')->paginate($pageSize)
-        ]);
+        return view('distribusi.index', ['distribusis' => $distribusis]);
     }
 
     /**
@@ -107,7 +123,6 @@ class DistribusiController extends Controller
      */
     public function destroy(Distribusi $distribusi)
     {
-        $distribusi->delete();
-        return redirect('/distribusi');
+        return ['success' => $distribusi->delete()];
     }
 }

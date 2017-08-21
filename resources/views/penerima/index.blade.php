@@ -3,81 +3,88 @@
 @section('content')
 
 <div class="x_panel">
-    <div class="x_title">
-        <h2>PENERIMA <small>Daftar penerima seluruh Kabupaten Purwakarta</small></h2>
-        <div class="clearfix"></div>
-    </div>
-
     <div class="x_content">
-        <div class="pull-right">
-            <form method="get" class="form-inline">
-                <div class="input-group">
-                    <input type="text" name="q" class="form-control" placeholder="Cari..." value="{{ request('q') }}">
-                    <span class="input-group-btn">
-                        <!-- {!! Form::select('sort', ['penerimas.kode_keluarga' => 'Kode Keluarga'], request('sort'), ['class' => 'form-control']) !!} -->
-                        <!-- {!! Form::select('order', ['ASC' => 'A-Z', 'DESC' => 'Z-A'], request('order'), ['class' => 'form-control']) !!} -->
-                        {!! Form::select('pageSize', [10 => 10, 25 => 25, 50 => 50, 100 => 100, 200 => 200, 500 => 500, 1000 => 1000], request('pageSize'), ['class' => 'form-control']) !!}
-                        <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
-                        <a href="{{url('penerima')}}" class="btn btn-default" title="Refresh"><i class="fa fa-refresh"></i></a>
-                        <a href="#" class="btn btn-default" title="Download Excel"><i class="fa fa-file-excel-o"></i></a>
-                    </span>
-                </div>
-            </form>
-        </div>
-        <a href="{{url('penerima/create')}}" class="btn btn-success"><i class="fa fa-plus"></i> TAMBAH PENERIMA</a>
-        <hr>
-        <table class="table table-striped table-hover">
+        <h2>PENERIMA <small>Daftar penerima seluruh Kabupaten Purwakarta</small></h2>
+        <table class="table table-striped table-hover" id="bootgrid">
             <thead>
                 <tr>
-                    <th>#</th>
-                    <th>Kode Keluarga</th>
-                    <th>Kelurahan<br>Kecamatan</th>
-                    <th>Nomor KK/PKH</th>
-                    <th style="width:200px;">Nama Istri/Suami</th>
-                    <th>Tgl Lahir Istri/Suami</th>
-                    <th>NIK Istri/Suami</th>
-                    <th>Alamat</th>
-                    <th style="width:200px;">Nama Anggota Keluarga</th>
-                    <th>Kepesertaan</th>
-                    <th>Saldo (Liter)</th>
-                    <th class="text-right" style="width:90px;">Action</th>
+                    <th data-column-id="id" data-identifier="true" data-type="numeric">ID</th>
+                    <th data-column-id="kode_keluarga" data-formatter="kode_keluarga">Kode Keluarga</th>
+                    <th data-column-id="kelurahan" data-formatter="kelurahan">Kelurahan</th>
+                    <th data-column-id="kecamatan" data-formatter="kecamatan">Kecamatan</th>
+                    <th data-column-id="nomor_kk">No. KK</th>
+                    <th data-column-id="nomor_pkh">No. PKH</th>
+                    <th data-column-id="nama_suami">Suami</th>
+                    <th data-column-id="nama_istri">Istri</th>
+                    <th data-column-id="tanggal_lahir_suami">Tgl Lahir Suami</th>
+                    <th data-column-id="tanggal_lahir_istri">Tgl Lahir Istri</th>
+                    <th data-column-id="nik_suami">NIK Suami</th>
+                    <th data-column-id="nik_istri">NIK Istri</th>
+                    <th data-column-id="alamat">Alamat</th>
+                    <th data-column-id="nama_anggota_keluarga">Anggota Keluarga</th>
+                    <th data-column-id="kepesertaan">Kepesertaan</th>
+                    <th data-column-id="saldo">Saldo (Liter)</th>
+                    <th data-column-id="commands"
+                        data-formatter="commands"
+                        data-sortable="false"
+                        data-align="right"
+                        data-header-align="right">Action</th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach($penerimas as $k)
-                <tr>
-                    <td>{{ number_format($loop->index + $penerimas->firstItem()) }}</td>
-                    <td><a href="{{url('penerima/'.$k->id)}}">{{ strtoupper($k->kode_keluarga) }}</a></td>
-                    <td>
-                        <a href="{{url('kelurahan/'.$k->id)}}">{{ $k->kelurahan->nama }}</a><br>
-                        <a href="{{url('kecamatan/'.$k->id)}}">{{ $k->kecamatan->nama }}</a>
-                    </td>
-                    <td>{{ $k->nomor_kk }}<br>{{ $k->nomor_pkh }}</td>
-                    <td>{{ $k->nama_istri }}<br>{{ $k->nama_suami }}</td>
-                    <td>{{ $k->tanggal_lahir_istri }}<br>{{ $k->tanggal_lahir_suami }}</td>
-                    <td>{{ $k->nik_istri }}<br>{{ $k->nik_suami }}</td>
-                    <td>{{ $k->alamat }}</td>
-                    <td>{{ $k->nama_anggota_keluarga }}</td>
-                    <td>{{ $k->kepesertaan }}</td>
-                    <td>{{ $k->saldo }}</td>
-                    <td class="text-right">
-                        <div class="btn-group">
-                            <a href="{{url('penerima/'.$k->id.'/edit')}}" class="btn btn-sm btn-default"><i class="fa fa-edit"></i></a>
-                            <a href="#" class="btn btn-sm btn-default" onclick="event.preventDefault(); if(confirm('Anda yakin?')) {document.getElementById('delete-penerima-{{$k->id}}').submit()}"><i class="fa fa-trash"></i></a>
-                        </div>
-
-                        {!! Form::open(['method' => 'DELETE', 'url' => url('penerima/'.$k->id), 'style' => 'display:none;', 'id' => 'delete-penerima-'.$k->id]) !!}
-    					    {!! Form::hidden('redirect', url()->full()) !!}
-    					{!! Form::close() !!}
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
         </table>
-        <hr>
-        {!! $penerimas->appends(request()->all())->links() !!}
     </div>
 </div>
 
-
 @endsection
+
+@push('scripts')
+
+<script type="text/javascript">
+
+    var btn = '<a href="{{url('penerima/create')}}" class="btn btn-default"><i class="fa fa-plus"></i> TAMBAH PENERIMA</a>';
+
+    var grid = $('#bootgrid').bootgrid({
+        ajax: true, url: '{{url("penerima")}}',
+        ajaxSettings: {method: 'GET', cache: false},
+        searchSettings: { delay: 100, characters: 3 },
+        templates: {
+            header: "<div id=\"@{{ctx.id}}\" class=\"@{{css.header}}\"><div class=\"row\"><div class=\"col-sm-12 actionBar\"><p style=\"display:inline-block;margin-right:20px;\">"+btn+"</p><p class=\"@{{css.search}}\"></p><p class=\"@{{css.actions}}\"></p></div></div></div>"
+        },
+        formatters: {
+            "commands": function(column, row) {
+                return "<a class=\"btn btn-xs btn-default\" href=\"{{url('penerima')}}/" + row.id + "/edit\"><i class=\"fa fa-edit\"></i></a> " +
+                    "<button class=\"btn btn-xs btn-default c-delete\" data-id=\"" + row.id + "\"><i class=\"fa fa-trash\"></i></button>";
+            },
+            "kode_keluarga": function(column, row) {
+                return '<a href="{{url('/penerima/')}}/'+row.id+'">'+row.kode_keluarga.toUpperCase()+'</a>';
+            },
+            "kecamatan": function(column, row) {
+                return '<a href="{{url('/kecamatan/')}}/'+row.kecamatan_id+'">'+row.kecamatan+'</a>';
+            },
+            "kelurahan": function(column, row) {
+                return '<a href="{{url('/kelurahan/')}}/'+row.kelurahan_id+'">'+row.kelurahan+'</a>';
+            },
+        }
+    }).on("loaded.rs.jquery.bootgrid", function() {
+        grid.find(".c-delete").on("click", function(e) {
+            deleteData($(this).data("id"));
+        });
+    });
+
+    var deleteData = function(id) {
+        if (confirm('Anda yakin akan menghapus data ini?')) {
+            $.ajax({
+                type: 'POST',
+                data: {'_method' : 'DELETE'},
+                url: '{{url("penerima")}}/' + id,
+                success: function(r) {
+                    console.log(r);
+                    $('#bootgrid').bootgrid('reload');
+                }
+            });
+        }
+    };
+
+</script>
+
+@endpush

@@ -15,22 +15,35 @@ class DonasiController extends Controller
      */
     public function index(Request $request)
     {
-        $pageSize = $request->pageSize ? $request->pageSize : 10;
-        $donasi = Donasi::when($request->q, function($query) use ($request) {
+        $pageSize = $request->rowCount > 0 ? $request->rowCount : 1000000;
+        $request['page'] = $request->current;
+        $sort = $request->sort ? key($request->sort) : 'donasis.tanggal';
+        $dir = $request->sort ? $request->sort[$sort] : 'DESC';
+
+        $donasis = Donasi::selectRaw('
+                    donasis.*,
+                    donaturs.nama AS donatur
+                ')
+                ->join('donaturs', 'donaturs.id', '=', 'donasis.donatur_id')
+                ->when($request->searchPhrase, function($query) use ($request) {
                     return $query
-                        ->join('donaturs', 'donaturs.id', '=', 'donasis.donatur_id')
-                        ->where('donasis.tanggal', '=', $request->q)
-                        ->orWhere('donaturs.nama', 'LIKE', '%'.$request->q.'%')
-                        ->orWhere('donaturs.instansi', 'LIKE', '%'.$request->q.'%')
-                        ->orWhere('donaturs.alamat', 'LIKE', '%'.$request->q.'%')
-                        ->orWhere('donaturs.telpon', 'LIKE', '%'.$request->q.'%');
-                });
+                        ->where('donasis.tanggal', '=', $request->searchPhrase)
+                        ->orWhere('donaturs.nama', 'LIKE', '%'.$request->searchPhrase.'%')
+                        ->orWhere('donaturs.instansi', 'LIKE', '%'.$request->searchPhrase.'%')
+                        ->orWhere('donaturs.alamat', 'LIKE', '%'.$request->searchPhrase.'%')
+                        ->orWhere('donaturs.telpon', 'LIKE', '%'.$request->searchPhrase.'%');
+                })->orderBy($sort, $dir)->paginate($pageSize);
 
+        if ($request->ajax()) {
+            return [
+                'rowCount' => $donasis->perPage(),
+                'total' => $donasis->total(),
+                'current' => $donasis->currentPage(),
+                'rows' => $donasis->items(),
+            ];
+        }
 
-        return view('donasi.index', [
-            'total' => $donasi->selectRaw('SUM(jumlah) as total')->first()->total,
-            'donasis' => $donasi->select('donasis.*')->orderBy('tanggal', 'DESC')->paginate($pageSize)
-        ]);
+        return view('donasi.index', ['donasis' => $donasis]);
     }
 
     /**
@@ -102,7 +115,6 @@ class DonasiController extends Controller
      */
     public function destroy(Donasi $donasi)
     {
-        $donasi->delete();
-        return redirect('/donasi');
+        return ['success' => $donasi->delete()];
     }
 }

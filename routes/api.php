@@ -13,6 +13,14 @@ use Illuminate\Http\Request;
 |
 */
 
+use App\Atm;
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::get('/atm/update', function(Request $request) {
+    $atm = Atm::find($request->id);
+    $atm->update($request->all());
+    return $atm;
 });

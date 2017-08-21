@@ -15,18 +15,37 @@ class AtmController extends Controller
      */
     public function index(Request $request)
     {
-        return view('atm.index', [
-            'atms' => Atm::select('atms.*')
-                        ->join('kecamatans', 'kecamatans.id', '=', 'atms.kecamatan_id', 'LEFT')
-                        ->join('kelurahans', 'kelurahans.id', '=', 'atms.kelurahan_id', 'LEFT')
-                        ->when($request->q, function($query) use ($request) {
-                            return $query
-                                ->where('atms.ip_address', 'LIKE', '%'.$request->q.'%')
-                                ->orWhere('kelurahans.nama', 'LIKE', '%'.$request->q.'%')
-                                ->orWhere('kecamatans.nama', 'LIKE', '%'.$request->q.'%');
-                        })
-                        ->orderBy('atms.kecamatan_id', 'ASC')->paginate(10)
-        ]);
+        $pageSize = $request->rowCount > 0 ? $request->rowCount : 1000000;
+        $request['page'] = $request->current;
+        $sort = $request->sort ? key($request->sort) : 'atms.kode';
+        $dir = $request->sort ? $request->sort[$sort] : 'asc';
+
+        $atms = Atm::selectRaw('
+                        atms.*,
+                        kecamatans.nama AS kecamatan,
+                        kelurahans.nama AS kelurahan
+                    ')
+                    ->join('kecamatans', 'kecamatans.id', '=', 'atms.kecamatan_id', 'LEFT')
+                    ->join('kelurahans', 'kelurahans.id', '=', 'atms.kelurahan_id', 'LEFT')
+                    ->when($request->searchPhrase, function($query) use ($request) {
+                        return $query
+                            ->where('atms.ip_address', 'LIKE', '%'.$request->searchPhrase.'%')
+                            ->where('atms.kode', 'LIKE', '%'.$request->searchPhrase.'%')
+                            ->orWhere('kelurahans.nama', 'LIKE', '%'.$request->searchPhrase.'%')
+                            ->orWhere('kecamatans.nama', 'LIKE', '%'.$request->searchPhrase.'%');
+                    })
+                    ->orderBy($sort, $dir)->paginate($pageSize);
+
+        if ($request->ajax()) {
+            return [
+                'rowCount' => $atms->perPage(),
+                'total' => $atms->total(),
+                'current' => $atms->currentPage(),
+                'rows' => $atms->items(),
+            ];
+        }
+
+        return view('atm.index', [ 'atms' => $atms]);
     }
 
     /**
@@ -96,7 +115,6 @@ class AtmController extends Controller
      */
     public function destroy(Atm $atm)
     {
-        $atm->delete();
-        return redirect('/atm');
+        return ['success' => $atm->delete()];
     }
 }
