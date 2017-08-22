@@ -31,16 +31,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home', [
+        return view('home.index', [
             'kecamatan' => Kecamatan::count(),
             'kelurahan' => Kelurahan::count(),
             'atm' => Atm::count(),
             'penerima' => Penerima::count(),
             'donatur' => Donatur::count(),
             'donasi' => Donasi::count(),
-            'donasis' => Donasi::latest()->limit(15)->get(),
-            'distribusis' => Distribusi::latest()->limit(15)->get(),
-            'pemeliharaans' => Pemeliharaan::latest()->limit(15)->get()
         ]);
     }
 }
