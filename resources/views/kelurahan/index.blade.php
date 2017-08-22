@@ -31,10 +31,10 @@
 
 <script type="text/javascript">
 
-    var btn = '<a href="/kelurahan/create" class="btn btn-default"><i class="fa fa-plus"></i> TAMBAH KELURAHAN</a>';
+    var btn = '<a href="{{url('kelurahan/create')}}" class="btn btn-default"><i class="fa fa-plus"></i> TAMBAH KELURAHAN</a>';
 
     var grid = $('#bootgrid').bootgrid({
-        ajax: true, url: '/kelurahan',
+        ajax: true, url: '{{url("kelurahan")}}',
         ajaxSettings: {method: 'GET', cache: false},
         searchSettings: { delay: 100, characters: 3 },
         templates: {
@@ -64,7 +64,7 @@
             $.ajax({
                 type: 'POST',
                 data: {'_method' : 'DELETE'},
-                url: '/kelurahan/' + id,
+                url: '{{url("kelurahan")}}/' + id,
                 success: function(r) {
                     console.log(r);
                     $('#bootgrid').bootgrid('reload');

@@ -31,10 +31,10 @@
 
 <script type="text/javascript">
 
-    var btn = '<a href="/donatur/create" class="btn btn-default"><i class="fa fa-plus"></i> TAMBAH DONATUR</a>';
+    var btn = '<a href="{{url('donatur/create')}}" class="btn btn-default"><i class="fa fa-plus"></i> TAMBAH DONATUR</a>';
 
     var grid = $('#bootgrid').bootgrid({
-        ajax: true, url: '/donatur',
+        ajax: true, url: '{{url("donatur")}}',
         ajaxSettings: {method: 'GET', cache: false},
         searchSettings: { delay: 100, characters: 3 },
         templates: {
@@ -42,7 +42,7 @@
         },
         formatters: {
             "commands": function(column, row) {
-                return "<a class=\"btn btn-xs btn-default\" href=\"/donatur/" + row.id + "/edit\"><i class=\"fa fa-edit\"></i></a> " +
+                return "<a class=\"btn btn-xs btn-default\" href=\"{{url('donatur')}}/" + row.id + "/edit\"><i class=\"fa fa-edit\"></i></a> " +
                     "<button class=\"btn btn-xs btn-default c-delete\" data-id=\"" + row.id + "\"><i class=\"fa fa-trash\"></i></button>";
             },
             "kode_keluarga": function(column, row) {
@@ -61,7 +61,7 @@
             $.ajax({
                 type: 'POST',
                 data: {'_method' : 'DELETE'},
-                url: '/donatur/' + id,
+                url: '{{url("donatur")}}/' + id,
                 success: function(r) {
                     console.log(r);
                     $('#bootgrid').bootgrid('reload');

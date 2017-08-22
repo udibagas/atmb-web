@@ -46,7 +46,7 @@
     var btn = '<a href="{{url('donasi/create')}}" class="btn btn-default"><i class="fa fa-plus"></i> TAMBAH ATM</a>';
 
     var grid = $('#bootgrid').bootgrid({
-        ajax: true, url: '/donasi',
+        ajax: true, url: '{{url("donasi")}}',
         ajaxSettings: {method: 'GET', cache: false},
         searchSettings: { delay: 100, characters: 3 },
         templates: {

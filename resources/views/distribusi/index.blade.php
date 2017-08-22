@@ -49,7 +49,7 @@
     var btn = '<a href="{{url('distribusi/create')}}" class="btn btn-default"><i class="fa fa-plus"></i> INPUT DISTRIBUSI</a>';
 
     var grid = $('#bootgrid').bootgrid({
-        ajax: true, url: '/distribusi',
+        ajax: true, url: '{{url("distribusi")}}',
         ajaxSettings: {method: 'GET', cache: false},
         searchSettings: { delay: 100, characters: 3 },
         templates: {
