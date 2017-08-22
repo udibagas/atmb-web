@@ -51,7 +51,7 @@ class LogController extends Controller
                 return $query->where('logs.atm_id', $request->kelurahan_id);
             })
             ->when($request->penerima_id, function($query) use ($request) {
-                return $query->where('logs.penerima_id', $request->kelurahan_id);
+                return $query->where('logs.penerima_id', $request->penerima_id);
             })
             ->orderBy($sort, $dir)->paginate($pageSize);
 

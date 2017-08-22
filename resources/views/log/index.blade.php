@@ -45,7 +45,6 @@
 
                 return row.kode+': '+ kode[row.kode];
             }
-
         }
     });
 

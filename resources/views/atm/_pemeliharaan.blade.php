@@ -5,8 +5,6 @@
             <thead>
                 <tr>
                     <th data-column-id="tanggal">Tanggal</th>
-                    <th data-column-id="kelurahan">Kelurahan</th>
-                    <th data-column-id="atm">ATM</th>
                     <th data-column-id="nama_petugas">Nama Petugas</th>
                     <th data-column-id="telpon_petugas">Telpon Petugas</th>
                     <th data-column-id="keterangan">Keterangan</th>
@@ -24,7 +22,7 @@
 <script type="text/javascript">
 
     var grid = $('#bootgrid-pemeliharaan').bootgrid({
-        ajax: true, url: '{{url("pemeliharaan?kecamatan_id=".$kecamatan->id)}}',
+        ajax: true, url: '{{url("pemeliharaan?atm_id=".$atm->id)}}',
         ajaxSettings: {method: 'GET', cache: false},
         searchSettings: { delay: 100, characters: 3 },
     });

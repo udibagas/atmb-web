@@ -4,10 +4,8 @@
         <table class="table table-striped table-hover" id="bootgrid-atm">
             <thead>
                 <tr>
-                    <th data-column-id="id" data-identifier="true" data-type="numeric">ID</th>
                     <th data-column-id="kode" data-formatter="kode">Kode</th>
                     <th data-column-id="ip_address">IP Address</th>
-                    <th data-column-id="kecamatan" data-formatter="kecamatan">Kecamatan</th>
                     <th data-column-id="kelurahan" data-formatter="kelurahan">Kelurahan</th>
                     <th data-column-id="alamat">Alamat</th>
                     <th data-column-id="nama_petugas">Petugas</th>
@@ -17,11 +15,6 @@
                     <th data-column-id="last_maintenance">Terakhir Maintenance</th>
                     <th data-column-id="status_beras">Status Beras</th>
                     <th data-column-id="status_pintu">Status Pintu</th>
-                    <th data-column-id="commands"
-                        data-formatter="commands"
-                        data-sortable="false"
-                        data-align="right"
-                        data-header-align="right">Action</th>
                 </tr>
             </thead>
         </table>

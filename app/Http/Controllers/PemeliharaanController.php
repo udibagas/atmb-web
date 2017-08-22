@@ -38,6 +38,7 @@ class PemeliharaanController extends Controller
                         ->where('pemeliharaans.tanggal', '=', $request->searchPhrase)
                         ->orWhere('pemeliharaans.nama_petugas', 'LIKE', '%'.$request->searchPhrase.'%')
                         ->orWhere('pemeliharaans.telpon_petugas', 'LIKE', '%'.$request->searchPhrase.'%')
+                        ->orWhere('pemeliharaans.keterangan', 'LIKE', '%'.$request->searchPhrase.'%')
                         ->orWhere('kecamatans.nama', 'LIKE', '%'.$request->searchPhrase.'%')
                         ->orWhere('kelurahans.nama', 'LIKE', '%'.$request->searchPhrase.'%')
                         ->orWhere('users.name', 'LIKE', '%'.$request->searchPhrase.'%')
