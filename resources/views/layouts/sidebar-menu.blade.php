@@ -5,7 +5,7 @@
             <li><a href="{{url('home')}}"><i class="fa fa-home"></i> Home</a> </li>
             <li><a><i class="fa fa-exchange"></i> Kegiatan <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                    <li><a href="{{url('donasi')}}">Donasi</a></li>
+                    <!-- <li><a href="{{url('donasi')}}">Donasi</a></li> -->
                     <li><a href="{{url('distribusi')}}">Distribusi</a></li>
                     <li><a href="{{url('pemeliharaan')}}">Pemeliharaan</a></li>
                 </ul>
@@ -16,7 +16,7 @@
                     <li><a href="{{url('kelurahan')}}">Kelurahan</a></li>
                     <li><a href="{{url('atm')}}">ATM</a></li>
                     <li><a href="{{url('penerima')}}">Penerima</a></li>
-                    <li><a href="{{url('donatur')}}">Donatur</a></li>
+                    <!-- <li><a href="{{url('donatur')}}">Donatur</a></li> -->
                     <li><a href="{{url('user')}}">User</a></li>
                 </ul>
             </li>

@@ -19,14 +19,14 @@
         <span class="count_top">Total Penerima</span>
         <div class="count">{{ number_format($penerima) }}</div>
     </div>
-    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+    <!-- <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
         <span class="count_top">Total Donatur</span>
         <div class="count">{{ $donatur }}</div>
     </div>
     <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
         <span class="count_top">Total Donasi</span>
         <div class="count">{{ $donasi }}</div>
-    </div>
+    </div> -->
 </div>
 <!-- /top tiles -->
 
@@ -54,11 +54,11 @@
                         PENERIMA
                     </a>
                 </li>
-                <li role="presentation" class="">
+                <!-- <li role="presentation" class="">
                     <a href="#tab_content41" role="tab" id="donatur-tab" data-toggle="tab" aria-expanded="false">
                         DONATUR
                     </a>
-                </li>
+                </li> -->
                 <li role="presentation" class="">
                     <a href="#tab_content51" role="tab" id="donasi-tab" data-toggle="tab" aria-expanded="false">
                         DONASI
@@ -94,9 +94,9 @@
                 <div role="tabpanel" class="tab-pane fade" id="tab_content4" aria-labelledby="penerima-tab">
                     @include('home._penerima')
                 </div>
-                <div role="tabpanel" class="tab-pane fade" id="tab_content41" aria-labelledby="donatur-tab">
+                <!-- <div role="tabpanel" class="tab-pane fade" id="tab_content41" aria-labelledby="donatur-tab">
                     @include('home._donatur')
-                </div>
+                </div> -->
                 <div role="tabpanel" class="tab-pane fade" id="tab_content51" aria-labelledby="donasi-tab">
                     @include('home._donasi')
                 </div>
