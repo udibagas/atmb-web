@@ -33,8 +33,11 @@ class AtmController extends Controller
                             ->where('atms.kode', 'LIKE', '%'.$request->searchPhrase.'%')
                             ->orWhere('kelurahans.nama', 'LIKE', '%'.$request->searchPhrase.'%')
                             ->orWhere('kecamatans.nama', 'LIKE', '%'.$request->searchPhrase.'%');
-                    })
-                    ->orderBy($sort, $dir)->paginate($pageSize);
+                    })->when($request->kecamatan_id, function($query) use ($request) {
+                        return $query->where('atms.kecamatan_id', $request->kecamatan_id);
+                    })->when($request->kelurahan_id, function($query) use ($request) {
+                        return $query->where('atms.kelurahan_id', $request->kelurahan_id);
+                    })->orderBy($sort, $dir)->paginate($pageSize);
 
         if ($request->ajax()) {
             return [

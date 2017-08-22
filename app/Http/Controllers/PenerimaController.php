@@ -40,14 +40,11 @@ class PenerimaController extends Controller
                             ->orWhere('penerimas.nik_istri', 'LIKE', '%'.$request->searchPhrase.'%')
                             ->orWhere('penerimas.nama_suami', 'LIKE', '%'.$request->searchPhrase.'%')
                             ->orWhere('penerimas.nama_istri', 'LIKE', '%'.$request->searchPhrase.'%');
-                    })
-                    ->when($request->kecamatan_id, function($query) use ($request) {
+                    })->when($request->kecamatan_id, function($query) use ($request) {
                         return $query->where('penerimas.kecamatan_id', $request->kecamatan_id);
-                    })
-                    ->when($request->kelurahan_id, function($query) use ($request) {
+                    })->when($request->kelurahan_id, function($query) use ($request) {
                         return $query->where('penerimas.kelurahan_id', $request->kelurahan_id);
-                    })
-                    ->orderBy($sort, $dir)->paginate($pageSize);
+                    })->orderBy($sort, $dir)->paginate($pageSize);
 
         if ($request->ajax()) {
             return [

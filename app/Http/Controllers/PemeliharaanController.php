@@ -42,6 +42,12 @@ class PemeliharaanController extends Controller
                         ->orWhere('kelurahans.nama', 'LIKE', '%'.$request->searchPhrase.'%')
                         ->orWhere('users.name', 'LIKE', '%'.$request->searchPhrase.'%')
                         ->orWhere('atms.kode', 'LIKE', '%'.$request->searchPhrase.'%');
+                })->when($request->kecamatan_id, function($query) use ($request) {
+                    return $query->where('pemeliharaans.kecamatan_id', $request->kecamatan_id);
+                })->when($request->kelurahan_id, function($query) use ($request) {
+                    return $query->where('pemeliharaans.kelurahan_id', $request->kelurahan_id);
+                })->when($request->atm_id, function($query) use ($request) {
+                    return $query->where('pemeliharaans.atm_id', $request->atm_id);
                 })->orderBy($sort, $dir)->paginate($pageSize);
 
         if ($request->ajax()) {

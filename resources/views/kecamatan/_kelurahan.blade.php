@@ -1,31 +1,44 @@
 <div class="x_panel">
-    <div class="x_title">
-        <h2>KELURAHAN/DESA <small>Daftar kelurahan/desa di kecamatan {{ $kecamatan->nama }}</small></h2>
-        <div class="clearfix"></div>
-    </div>
-
     <div class="x_content">
-        <table class="table table-striped table-hover">
+        <h2>KELURAHAN/DESA <small>Daftar kelurahan/desa di kecamatan {{$kecamatan->nama}}</small></h2>
+        <table class="table table-striped table-hover" id="bootgrid-kelurahan">
             <thead>
                 <tr>
-                    <th>#</th>
-                    <th>Nama Kelurahan</th>
-                    <th>Kode</th>
-                    <th>Jumlah ATM</th>
-                    <th>Jumlah Penerima</th>
+                    <th data-column-id="id" data-identifier="true" data-type="numeric">ID</th>
+                    <th data-column-id="nama" data-formatter="nama">Nama Kelurahan</th>
+                    <th data-column-id="kode">Kode</th>
+                    <th data-column-id="jml_atm" data-sortable="false">Jumlah ATM</th>
+                    <th data-column-id="jml_penerima" data-sortable="false">Jumlah Penerima</th>
+                    <th data-column-id="commands"
+                        data-formatter="commands"
+                        data-sortable="false"
+                        data-align="right"
+                        data-header-align="right">Action</th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach($kecamatan->kelurahan as $k)
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td><a href="{{url('kelurahan/'.$k->id)}}">{{ $k->nama }}</a></td>
-                    <td>{{ $k->kode }}</td>
-                    <td>{{ $k->atm->count() }}</td>
-                    <td>{{ number_format($k->penerima->count()) }}</td>
-                </tr>
-                @endforeach
-            </tbody>
         </table>
     </div>
 </div>
+
+@push('scripts')
+
+<script type="text/javascript">
+
+    var grid = $('#bootgrid-kelurahan').bootgrid({
+        ajax: true, url: '{{url("kelurahan?kecamatan_id=".$kecamatan->id)}}',
+        ajaxSettings: {method: 'GET', cache: false},
+        searchSettings: { delay: 100, characters: 3 },
+        formatters: {
+            "nama": function(column, row) {
+                return '<a href="{{url('/kelurahan/')}}/'+row.id+'">'+row.nama+'</a>';
+            },
+            "kecamatan": function(column, row) {
+                return '<a href="{{url('/kecamatan/')}}/'+row.kecamatan_id+'">'+row.kecamatan+'</a>';
+            }
+
+        }
+    });
+
+</script>
+
+@endpush

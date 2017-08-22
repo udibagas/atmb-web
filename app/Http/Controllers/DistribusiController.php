@@ -42,7 +42,13 @@ class DistribusiController extends Controller
                         ->orWhere('kelurahans.nama', 'LIKE', '%'.$request->q.'%')
                         ->orWhere('users.name', 'LIKE', '%'.$request->q.'%')
                         ->orWhere('atms.kode', 'LIKE', '%'.$request->q.'%');
-                })->orderBy('tanggal', 'DESC')->paginate($pageSize);
+                })->when($request->kecamatan_id, function($query) use ($request) {
+                    return $query->where('distribusis.kecamatan_id', $request->kecamatan_id);
+                })->when($request->kelurahan_id, function($query) use ($request) {
+                    return $query->where('distribusis.kelurahan_id', $request->kelurahan_id);
+                })->when($request->atm_id, function($query) use ($request) {
+                    return $query->where('distribusis.atm_id', $request->atm_id);
+                })->orderBy('distribusis.tanggal', 'DESC')->paginate($pageSize);
 
         if ($request->ajax()) {
             return [
