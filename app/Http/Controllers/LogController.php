@@ -32,28 +32,23 @@ class LogController extends Controller
             ->join('kelurahans', 'kelurahans.id', '=', 'logs.kelurahan_id', 'LEFT')
             ->join('atms', 'atms.id', '=', 'logs.atm_id', 'LEFT')
             ->join('penerimas', 'penerimas.id', '=', 'logs.penerima_id', 'LEFT')
-            ->when($request->q, function($query) use ($request) {
+            ->when($request->searchPhrase, function($query) use ($request) {
                 return $query
-                    ->where('pesan', 'LIKE', '%'.$request->q.'%')
-                    ->orWhere('kecamatans.nama', 'LIKE', '%'.$request->q.'%')
-                    ->orWhere('kelurahans.nama', 'LIKE', '%'.$request->q.'%')
-                    ->orWhere('atms.kode', 'LIKE', '%'.$request->q.'%')
-                    ->orWhere('penerimas.nama_suami', 'LIKE', '%'.$request->q.'%')
-                    ->orWhere('penerimas.nama_istri', 'LIKE', '%'.$request->q.'%');
-            })
-            ->when($request->kecamatan_id, function($query) use ($request) {
+                    ->where('pesan', 'LIKE', '%'.$request->searchPhrase.'%')
+                    ->orWhere('kecamatans.nama', 'LIKE', '%'.$request->searchPhrase.'%')
+                    ->orWhere('kelurahans.nama', 'LIKE', '%'.$request->searchPhrase.'%')
+                    ->orWhere('atms.kode', 'LIKE', '%'.$request->searchPhrase.'%')
+                    ->orWhere('penerimas.nama_suami', 'LIKE', '%'.$request->searchPhrase.'%')
+                    ->orWhere('penerimas.nama_istri', 'LIKE', '%'.$request->searchPhrase.'%');
+            })->when($request->kecamatan_id, function($query) use ($request) {
                 return $query->where('logs.kecamatan_id', $request->kecamatan_id);
-            })
-            ->when($request->kelurahan_id, function($query) use ($request) {
+            })->when($request->kelurahan_id, function($query) use ($request) {
                 return $query->where('logs.kelurahan_id', $request->kelurahan_id);
-            })
-            ->when($request->atm_id, function($query) use ($request) {
+            })->when($request->atm_id, function($query) use ($request) {
                 return $query->where('logs.atm_id', $request->kelurahan_id);
-            })
-            ->when($request->penerima_id, function($query) use ($request) {
+            })->when($request->penerima_id, function($query) use ($request) {
                 return $query->where('logs.penerima_id', $request->penerima_id);
-            })
-            ->orderBy($sort, $dir)->paginate($pageSize);
+            })->orderBy($sort, $dir)->paginate($pageSize);
 
         if ($request->ajax()) {
             return [

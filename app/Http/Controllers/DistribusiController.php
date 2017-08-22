@@ -33,15 +33,15 @@ class DistribusiController extends Controller
                 ->join('kelurahans', 'kelurahans.id', '=', 'distribusis.kelurahan_id')
                 ->join('atms', 'atms.id', '=', 'distribusis.atm_id')
                 ->join('users', 'users.id', '=', 'distribusis.user_id')
-                ->when($request->q, function($query) use ($request) {
+                ->when($request->searchPhrase, function($query) use ($request) {
                     return $query
-                        ->where('distribusis.tanggal', '=', $request->q)
-                        ->orWhere('distribusis.nama_petugas', 'LIKE', '%'.$request->q.'%')
-                        ->orWhere('distribusis.telpon_petugas', 'LIKE', '%'.$request->q.'%')
-                        ->orWhere('kecamatans.nama', 'LIKE', '%'.$request->q.'%')
-                        ->orWhere('kelurahans.nama', 'LIKE', '%'.$request->q.'%')
-                        ->orWhere('users.name', 'LIKE', '%'.$request->q.'%')
-                        ->orWhere('atms.kode', 'LIKE', '%'.$request->q.'%');
+                        ->where('distribusis.tanggal', '=', $request->searchPhrase)
+                        ->orWhere('distribusis.nama_petugas', 'LIKE', '%'.$request->searchPhrase.'%')
+                        ->orWhere('distribusis.telpon_petugas', 'LIKE', '%'.$request->searchPhrase.'%')
+                        ->orWhere('kecamatans.nama', 'LIKE', '%'.$request->searchPhrase.'%')
+                        ->orWhere('kelurahans.nama', 'LIKE', '%'.$request->searchPhrase.'%')
+                        ->orWhere('users.name', 'LIKE', '%'.$request->searchPhrase.'%')
+                        ->orWhere('atms.kode', 'LIKE', '%'.$request->searchPhrase.'%');
                 })->when($request->kecamatan_id, function($query) use ($request) {
                     return $query->where('distribusis.kecamatan_id', $request->kecamatan_id);
                 })->when($request->kelurahan_id, function($query) use ($request) {
