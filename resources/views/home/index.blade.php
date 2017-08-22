@@ -59,11 +59,11 @@
                         DONATUR
                     </a>
                 </li> -->
-                <li role="presentation" class="">
+                <!-- <li role="presentation" class="">
                     <a href="#tab_content51" role="tab" id="donasi-tab" data-toggle="tab" aria-expanded="false">
                         DONASI
                     </a>
-                </li>
+                </li> -->
                 <li role="presentation" class="">
                     <a href="#tab_content5" role="tab" id="distribusi-tab" data-toggle="tab" aria-expanded="false">
                         DISTRIBUSI
@@ -97,9 +97,9 @@
                 <!-- <div role="tabpanel" class="tab-pane fade" id="tab_content41" aria-labelledby="donatur-tab">
                     @include('home._donatur')
                 </div> -->
-                <div role="tabpanel" class="tab-pane fade" id="tab_content51" aria-labelledby="donasi-tab">
+                <!-- <div role="tabpanel" class="tab-pane fade" id="tab_content51" aria-labelledby="donasi-tab">
                     @include('home._donasi')
-                </div>
+                </div> -->
                 <div role="tabpanel" class="tab-pane fade" id="tab_content5" aria-labelledby="distribusi-tab">
                     @include('home._distribusi')
                 </div>
