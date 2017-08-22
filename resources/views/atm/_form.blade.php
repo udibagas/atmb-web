@@ -55,14 +55,28 @@
     </div>
 
     <div class="form-group{{ $errors->has('ip_address') ? ' has-error' : '' }}">
-        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">IP Address <span class="required">*</span>
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Kapasitas <span class="required">*</span>
         </label>
         <div class="col-md-6 col-sm-6 col-xs-12">
-            {{ Form::text('ip_address', $atm->ip_address, ['class' => 'form-control  col-md-7 col-xs-12', 'placeholder' => 'IP Address']) }}
+            {{ Form::text('ip_address', $atm->ip_address, ['class' => 'form-control  col-md-7 col-xs-12', 'placeholder' => 'Kapasitas']) }}
 
             @if ($errors->has('ip_address'))
                 <span class="help-block">
                     <strong>{{ $errors->first('ip_address') }}</strong>
+                </span>
+            @endif
+        </div>
+    </div>
+
+    <div class="form-group{{ $errors->has('kapasitas') ? ' has-error' : '' }}">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">IP Address <span class="required">*</span>
+        </label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            {{ Form::number('kapasitas', $atm->kapasitas, ['class' => 'form-control  col-md-7 col-xs-12', 'placeholder' => 'IP Address']) }}
+
+            @if ($errors->has('kapasitas'))
+                <span class="help-block">
+                    <strong>{{ $errors->first('kapasitas') }}</strong>
                 </span>
             @endif
         </div>

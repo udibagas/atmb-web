@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Pemeliharaan;
+use App\Atm;
+use App\Log;
 use App\Http\Requests\PemeliharaanRequest;
 
 class PemeliharaanController extends Controller
@@ -76,7 +78,24 @@ class PemeliharaanController extends Controller
     {
         $data = $request->all();
         $data['user_id'] = auth()->user()->id;
-        Pemeliharaan::create($data);
+        $pemeliharaan = Pemeliharaan::create($data);
+
+        //  update last_maintenance
+        $atm = Atm::find($data['atm_id']);
+        $atm->update([
+            'last_maintenance' => $pemeliharaan->tanggal,
+            'maintenance_by' => $pemeliharaan->nama_petugas
+        ]);
+
+        // input to log
+        Log::create([
+            'kecamatan_id' => $data['kecamatan_id'],
+            'kelurahan_id' => $data['kelurahan_id'],
+            'atm_id' => $data['atm_id'],
+            'kode' => 104,
+            'pesan' => 'Pemeliharaan ATM oleh '.$pemeliharaan->nama_petugas.' ('.$pemeliharaan->telpon_petugas.')'
+        ]);
+
         return redirect('/pemeliharaan');
     }
 

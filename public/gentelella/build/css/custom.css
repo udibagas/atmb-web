@@ -4307,3 +4307,8 @@ ul.notifications {
   border: 1px solid #e5e5e5; }
 
 /** /Dropzone.js **/
+
+.bootgrid-table td,
+.bootgrid-table th>.column-header-anchor>.text {
+    white-space: normal;
+}

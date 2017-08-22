@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Distribusi;
+use App\Atm;
+use App\Log;
 use App\Http\Requests\DistribusiRequest;
 
 class DistribusiController extends Controller
@@ -76,7 +78,25 @@ class DistribusiController extends Controller
     {
         $data = $request->all();
         $data['user_id'] = auth()->user()->id;
-        Distribusi::create($data);
+        $distribusi = Distribusi::create($data);
+
+        //  update last_refill & saldo
+        $atm = Atm::find($data['atm_id']);
+        $atm->update([
+            'last_refill' => $distribusi->tanggal,
+            'refill_by' => $distribusi->nama_petugas,
+            'saldo' => $atm->saldo + $distribusi->jumlah
+        ]);
+
+        // input to log
+        Log::create([
+            'kecamatan_id' => $data['kecamatan_id'],
+            'kelurahan_id' => $data['kelurahan_id'],
+            'atm_id' => $data['atm_id'],
+            'kode' => 100,
+            'pesan' => 'Isi ulang ATM sebanyak '.$distribusi->jumlah.' liter oleh '.$distribusi->nama_petugas.' ('.$distribusi->telpon_petugas.')'
+        ]);
+
         return redirect('/distribusi');
     }
 

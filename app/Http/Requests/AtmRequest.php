@@ -31,6 +31,7 @@ class AtmRequest extends FormRequest
             'alamat' => 'required',
             'nama_petugas' => 'required',
             'telpon_petugas' => 'required',
+            'kapasitas' => 'required',
         ];
     }
 }

@@ -9,7 +9,8 @@ class Atm extends Model
     protected $fillable = [
         'kecamatan_id', 'kelurahan_id', 'kode', 'ip_address', 'alamat', 'saldo',
         'status_pintu', 'status_beras', 'last_refill', 'last_maintenance',
-        'refill_by', 'maintenance_by', 'nama_petugas', 'telpon_petugas', 'user_id'
+        'refill_by', 'maintenance_by', 'nama_petugas', 'telpon_petugas', 'user_id',
+        'kapasitas'
     ];
 
     public function kecamatan() {

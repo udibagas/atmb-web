@@ -13,6 +13,7 @@
                     <th data-column-id="kelurahan">Kelurahan</th>
                     <th data-column-id="atm">ATM</th>
                     <th data-formatter="penerima">Penerima</th>
+                    <th data-column-id="kode" data-formatter="kode">Kode</th>
                     <th data-column-id="pesan">Pesan</th>
                 </tr>
             </thead>
@@ -34,6 +35,16 @@
             "penerima": function(column, row) {
                 return row.nama_suami+' / '+row.nama_istri;
             },
+            "kode": function(column, row) {
+                kode = [];
+                kode[100] = 'Isi Ulang';
+                kode[101] = 'Pengambilan';
+                kode[102] = 'Beras Habis';
+                kode[103] = 'Pintu Terbuka';
+                kode[104] = 'Pemeliharaan';
+
+                return row.kode+': '+ kode[row.kode];
+            }
 
         }
     });

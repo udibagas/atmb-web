@@ -16,6 +16,7 @@
                     <th data-column-id="alamat">Alamat</th>
                     <th data-column-id="nama_petugas">Petugas</th>
                     <th data-column-id="saldo">Saldo (Liter)</th>
+                    <th data-column-id="kapasitas">Kapasitas (Liter)</th>
                     <th data-column-id="last_refill">Terakhir Isi Ulang</th>
                     <th data-column-id="last_maintenance">Terakhir Maintenance</th>
                     <th data-column-id="status_beras">Status Beras</th>
