@@ -78,7 +78,9 @@ Route::get('/log', function(Request $request) {
 });
 
 Route::get('/atm/update', function(Request $request) {
+    $data = $request->all();
     $atm = Atm::find($request->id);
-    $atm->update($request->all());
+    $data['saldo'] = $atm->saldo - $data['saldo'];
+    $atm->update($data);
     return $atm;
 });
