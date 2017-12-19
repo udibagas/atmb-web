@@ -12,6 +12,8 @@
                     <th data-column-id="nama" data-formatter="nama">Nama</th>
                     <th data-column-id="kode">Kode</th>
                     <th data-column-id="jml_kelurahan" data-sortable="false">Jumlah Kelurahan/Desa</th>
+                    <th data-column-id="nama_cama">Nama Camat</th>
+                    <th data-column-id="no_hp_camat">No HP Camat</th>
                     <th data-column-id="jml_atm" data-sortable="false">Jumlah ATM</th>
                     <th data-column-id="jml_penerima" data-sortable="false">Jumlah Penerima</th>
                     <th data-column-id="commands"

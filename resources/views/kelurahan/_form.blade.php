@@ -50,6 +50,34 @@
         </div>
     </div>
 
+    <div class="form-group{{ $errors->has('nama_lurah') ? ' has-error' : '' }}">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Nama Lurah
+        </label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            {{ Form::text('nama_lurah', $kelurahan->nama_lurah, ['class' => 'form-control  col-md-7 col-xs-12', 'placeholder' => 'Nama Lurah']) }}
+
+            @if ($errors->has('nama_lurah'))
+                <span class="help-block">
+                    <strong>{{ $errors->first('nama_lurah') }}</strong>
+                </span>
+            @endif
+        </div>
+    </div>
+
+    <div class="form-group{{ $errors->has('no_hp_lurah') ? ' has-error' : '' }}">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Nomor HP Lurah
+        </label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            {{ Form::text('no_hp_lurah', $kelurahan->no_hp_lurah, ['class' => 'form-control  col-md-7 col-xs-12', 'placeholder' => 'Nomor HP Lurah']) }}
+
+            @if ($errors->has('no_hp_lurah'))
+                <span class="help-block">
+                    <strong>{{ $errors->first('no_hp_lurah') }}</strong>
+                </span>
+            @endif
+        </div>
+    </div>
+
     <div class="ln_solid"></div>
 
     <div class="form-group">

@@ -12,6 +12,8 @@
                     <th data-column-id="nama" data-formatter="nama">Nama Kelurahan</th>
                     <th data-column-id="kode">Kode</th>
                     <th data-column-id="kecamatan" data-sortable="false" data-formatter="kecamatan">Kecamatan</th>
+                    <th data-column-id="nama_lurah">Nama Lurah</th>
+                    <th data-column-id="no_hp_lurah">No HP Lurah</th>
                     <th data-column-id="jml_atm" data-sortable="false">Jumlah ATM</th>
                     <th data-column-id="jml_penerima" data-sortable="false">Jumlah Penerima</th>
                     <th data-column-id="commands"

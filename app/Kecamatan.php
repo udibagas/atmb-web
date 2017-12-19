@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Kecamatan extends Model
 {
-    protected $fillable = ['nama', 'kode'];
+    protected $fillable = ['nama', 'kode', 'nama_camat', 'no_hp_camat'];
 
     public function kelurahan() {
         return $this->hasMany(Kelurahan::class);

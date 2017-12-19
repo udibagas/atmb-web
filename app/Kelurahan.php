@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Kelurahan extends Model
 {
-    protected $fillable = ['nama', 'kode', 'kecamatan_id'];
+    protected $fillable = ['nama', 'kode', 'kecamatan_id', 'nama_lurah', 'no_hp_lurah'];
 
     public function kecamatan() {
         return $this->belongsTo(Kecamatan::class);
