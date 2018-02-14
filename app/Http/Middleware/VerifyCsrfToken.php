@@ -14,4 +14,17 @@ class VerifyCsrfToken extends BaseVerifier
     protected $except = [
         //
     ];
+
+    public function handle($request, Closure $next)
+    {
+        if($request->input('_token')) {
+            if ( \Session::getToken() != $request->input('_token')) {
+                   dd(\Session::getToken() == $request->input('_token'));
+                \Log::error("Expired token found. Redirecting to /");
+                return redirect()->guest('/');
+            }
+        }
+
+        return parent::handle($request, $next);
+    }
 }
