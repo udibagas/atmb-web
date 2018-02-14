@@ -30,12 +30,12 @@ class VerifyCsrfToken extends BaseVerifier
     //     throw new TokenMismatchException;
     // }
 
-    public function handle($request, Closure $next)
-    {
-        if ($request->input('_token')) {
-            dd($request->session()->token()."\n".$request->input('_token'));
-        }
-
-        return parent::handle($request, $next);
-    }
+    // public function handle($request, Closure $next)
+    // {
+    //     if ($request->input('_token')) {
+    //         dd($request->session()->token()."\n".$request->input('_token'));
+    //     }
+    //
+    //     return parent::handle($request, $next);
+    // }
 }
