@@ -15,23 +15,4 @@ class VerifyCsrfToken extends BaseVerifier
     protected $except = [
         //
     ];
-
-    // public function handle($request, Closure $next)
-    // {
-    //     if (
-    //         $this->isReading($request) ||
-    //         $this->runningUnitTests() ||
-    //         $this->inExceptArray($request) ||
-    //         $this->tokensMatch($request)
-    //     ) {
-    //         return $this->addCookieToResponse($request, $next($request));
-    //     }
-    //
-    //     throw new TokenMismatchException;
-    // }
-
-    public function handle($request, Closure $next)
-    {
-        return $this->addCookieToResponse($request, $next($request));
-    }
 }
