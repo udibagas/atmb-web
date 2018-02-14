@@ -1,7 +1,6 @@
-@servers(['testing' => ['root@128.199.105.141']])
+@servers(['purwakarta' => ['atmb@114.6.180.154']])
 
-@task('deploy', ['on' => 'testing'])
-    cd /home/udibagas/apps/atmb-web
+@task('deploy', ['on' => 'purwakarta'])
     git pull
     php artisan migrate
 @endtask

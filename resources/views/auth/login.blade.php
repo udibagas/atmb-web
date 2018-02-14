@@ -6,7 +6,7 @@
     <div class="animate form login_form">
       <section class="login_content">
           <form class="form-horizontal" method="POST" action="{{ route('login') }}">
-              {!! csrf_field() !!}
+              {{ csrf_field() }}
           <h1>Login Form</h1>
           <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
             <input type="text" class="form-control" placeholder="Email" required="" name="email" />
