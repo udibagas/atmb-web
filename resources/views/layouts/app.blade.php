@@ -8,126 +8,73 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>ATM BERAS</title>
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <!-- Bootstrap -->
-    <link href="{{ asset('gentelella/vendors/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="{{ asset('gentelella/vendors/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
-    <!-- iCheck -->
-    <link href="{{ asset('gentelella/vendors/iCheck/skins/flat/green.css') }}" rel="stylesheet">
-    <link href="{{ asset('jquery.bootgrid/jquery.bootgrid.min.css') }}" rel="stylesheet"/>
-    <!-- Custom styling plus plugins -->
-    <link href="{{ asset('gentelella/build/css/custom.css') }}" rel="stylesheet">
-    <!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
-<body class="nav-md">
-    <body class="nav-md">
-      <div class="container body">
-        <div class="main_container">
-          <div class="col-md-3 left_col">
-            <div class="left_col scroll-view">
-              <div class="navbar nav_title" style="border: 0;">
-                <a href="index.html" class="site_title"><i class="fa fa-credit-card"></i> <span>ATM BERAS</span></a>
-              </div>
+<body>
+    <div id="app">
+        <nav class="navbar navbar-default navbar-static-top">
+            <div class="container">
+                <div class="navbar-header">
 
-              <div class="clearfix"></div>
+                    <!-- Collapsed Hamburger -->
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
+                        <span class="sr-only">Toggle Navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
 
-              <br />
-
-              <!-- sidebar menu -->
-              @include('layouts.sidebar-menu')
-              <!-- /sidebar menu -->
-            </div>
-          </div>
-
-          <!-- top navigation -->
-          <div class="top_nav">
-            <div class="nav_menu">
-              <nav class="" role="navigation">
-                <div class="nav toggle">
-                  <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                    <!-- Branding Image -->
+                    <a class="navbar-brand" href="{{ url('/') }}">
+                        {{ config('app.name', 'Laravel') }}
+                    </a>
                 </div>
 
-                <ul class="nav navbar-nav navbar-right">
-                    @if (auth()->check())
-                  <li class="">
-                    <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                      {{ auth()->user()->name }}
-                      <span class=" fa fa-angle-down"></span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-usermenu pull-right">
-                      <li><a href="/profile"> Profile
-                          <i class="fa fa-user pull-right"></i>
-                      </a></li>
-                      <li>
-                        <a href="/setting">
-                          Settings
-                          <i class="fa fa-gear pull-right"></i>
-                        </a>
-                      </li>
-                      <li>
-
-                          <a href="{{ route('logout') }}"
-                              onclick="event.preventDefault();
-                                       document.getElementById('logout-form').submit();">
-                              Logout
-                              <i class="fa fa-sign-out pull-right"></i>
-                          </a>
-
-                          <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                              {{ csrf_field() }}
-                          </form>
-                      </li>
+                <div class="collapse navbar-collapse" id="app-navbar-collapse">
+                    <!-- Left Side Of Navbar -->
+                    <ul class="nav navbar-nav">
+                        &nbsp;
                     </ul>
-                  </li>
-                  @endif
 
-                </ul>
-              </nav>
+                    <!-- Right Side Of Navbar -->
+                    <ul class="nav navbar-nav navbar-right">
+                        <!-- Authentication Links -->
+                        @if (Auth::guest())
+                            <li><a href="{{ route('login') }}">Login</a></li>
+                            <li><a href="{{ route('register') }}">Register</a></li>
+                        @else
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                </a>
+
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a href="{{ route('logout') }}"
+                                            onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                            Logout
+                                        </a>
+
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                            {{ csrf_field() }}
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endif
+                    </ul>
+                </div>
             </div>
-          </div>
-          <!-- /top navigation -->
+        </nav>
 
-          <!-- page content -->
-          <div class="right_col" role="main">
-            @yield('content')
-          </div>
-          <!-- /page content -->
+        @yield('content')
+    </div>
 
-          <!-- footer content -->
-          <footer>
-            <div class="pull-right">
-              KABUPATEN PURWAKARTA
-            </div>
-            <div class="clearfix"></div>
-          </footer>
-          <!-- /footer content -->
-        </div>
-      </div>
-
-      <!-- jQuery -->
-      <script src="{{ asset('gentelella/vendors/jquery/dist/jquery.min.js') }}"></script>
-      <!-- Bootstrap -->
-      <script src="{{ asset('gentelella/vendors/bootstrap/dist/js/bootstrap.min.js') }}"></script>
-      <!-- FastClick -->
-      <script src="{{ asset('gentelella/vendors/fastclick/lib/fastclick.js') }}"></script>
-
-      <script src="{{ asset('jquery.bootgrid/jquery.bootgrid.min.js') }}"></script>
-      <script src="{{ asset('jquery.bootgrid/jquery.bootgrid.fa.min.js') }}"></script>
-
-      <script type="text/javascript">
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-      </script>
-
-      @stack('scripts')
-
-      <!-- Custom Theme Scripts -->
-      <script src="{{ asset('gentelella/build/js/custom.min.js') }}"></script>
-    </body>
-  </html>
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}"></script>
+</body>
+</html>
