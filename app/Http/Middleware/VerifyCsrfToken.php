@@ -32,7 +32,10 @@ class VerifyCsrfToken extends BaseVerifier
 
     public function handle($request, Closure $next)
     {
-        dd($request->session()->token()."<br>".$request->input('_token'));
+        if ($request->input('_token')) {
+            dd($request->session()->token()."\n".$request->input('_token'));
+        }
+
         return parent::handle($request, $next);
     }
 }
