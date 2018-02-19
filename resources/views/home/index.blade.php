@@ -137,7 +137,7 @@ Highcharts.chart('chart', {
     xAxis: {
         categories: [
             @foreach ($atms as $a)
-                "{{ strtoupper($a->kelurahan->nama) }}",
+                "{{ strtoupper($a->kelurahan->nama) }}, {{ strtoupper($a->kecamatan->nama) }}",
             @endforeach
         ]},
     yAxis: {

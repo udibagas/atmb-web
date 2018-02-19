@@ -38,7 +38,9 @@ class HomeController extends Controller
             'penerima' => Penerima::count(),
             'donatur' => Donatur::count(),
             'donasi' => Donasi::count(),
-            'atms' => Atm::all()
+            'atms' => Atm::join('kelurahans', 'kelurahans.id', '=', 'atms.kelurahan_id')
+                        ->orderBy('kelurahans.nama', 'ASC')
+                        ->get()
         ]);
     }
 }
