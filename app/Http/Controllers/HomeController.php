@@ -38,6 +38,7 @@ class HomeController extends Controller
             'penerima' => Penerima::count(),
             'donatur' => Donatur::count(),
             'donasi' => Donasi::count(),
+            'atms' => Atm::all()
         ]);
     }
 }

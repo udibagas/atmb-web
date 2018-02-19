@@ -21,6 +21,9 @@
     <!-- Custom styling plus plugins -->
     <link href="{{ asset('gentelella/build/css/custom.css') }}" rel="stylesheet">
     <!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> -->
+    <script src="{{ asset('hc/code/highcharts.js') }}"></script>
+    <script src="{{ asset('hc/code/modules/exporting.js') }}"></script>
+
 </head>
 <body class="nav-md">
     <body class="nav-md">

@@ -30,6 +30,12 @@
 </div>
 <!-- /top tiles -->
 
+<div class="panel panel-default">
+    <div class="panel-body" id="chart" style="height:300px;">
+
+    </div>
+</div>
+
 <div class="x_panel">
     <div class="x_content">
         <div class="" role="tabpanel" data-example-id="togglable-tabs">
@@ -116,3 +122,63 @@
 
 
 @endsection
+
+@push('scripts')
+
+<script type="text/javascript">
+// tambahan dari bagas
+Highcharts.chart('chart', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'SALDO ATM BERAS'
+    },
+    xAxis: {
+        categories: [
+            @foreach ($atms as $a)
+                "{{ strtoupper($a->kelurahan->nama) }}",
+            @endforeach
+        ]},
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Saldo ATM Beras dalam liter'
+        }
+    },
+    tooltip: {
+        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> L<br/>',
+        shared: true
+    },
+    plotOptions: {
+        column: {
+            grouping: false,
+            shadow: false,
+            borderWidth: 0
+        }
+    },
+    series: [{
+        name: 'Kapasitas',
+        color: 'rgba(165,170,217,1)',
+        data: [
+            @foreach ($atms as $a)
+                {{ $a->kapasitas }},
+            @endforeach
+        ],
+        pointPadding: 0.12,
+        pointPlacement: -0.2
+    }, {
+        name: 'Saldo',
+        color: 'rgba(126,86,134,.9)',
+        data: [
+            @foreach ($atms as $a)
+                {{ $a->saldo }},
+            @endforeach
+        ],
+        pointPadding: 0.2,
+        pointPlacement: -0.2
+    }]
+});
+</script>
+
+@endpush
